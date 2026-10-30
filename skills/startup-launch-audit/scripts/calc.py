@@ -34,6 +34,15 @@ VERDICT_GO_ABOVE = Decimal("7.5")
 VERDICT_CHECK_FROM = Decimal("6")
 VERDICT_RANK = {"shelve": 0, "check": 1, "go": 2}
 VERDICT_LABELS = {"go": "Делать", "check": "Сначала проверить", "shelve": "Отложить"}
+VERDICT_LABELS_MVP = {"go": "Вкладываться в рост", "check": "Сначала проверить спрос",
+                      "shelve": "Не вкладываться — менять продукт или сегмент"}
+ADJUSTMENT_LABELS = {"mvp_test_first": "продукт уже сделан, а надёжность не высокая — "
+                                       "сначала дешёвая проверка спроса, а не отказ"}
+
+
+def verdict_labels(stage):
+    """Надписи вердикта по стадии: для готового продукта без денег — свои."""
+    return VERDICT_LABELS_MVP if stage == "mvp" else VERDICT_LABELS
 CONFIDENCE_HIGH_FROM = 0.7
 CONFIDENCE_MEDIUM_FROM = 0.4
 CONFIDENCE_LABELS = {"high": "высокая", "medium": "средняя", "low": "низкая"}
@@ -267,7 +276,7 @@ def _project(p):
     }
 
 
-def scorecard(sc: dict) -> dict:
+def scorecard(sc: dict, stage: str | None = None) -> dict:
     """Оценка идеи: баллы с ограничением допущений, итог, ограничители вердикта, надёжность."""
     sc = _as_dict(sc, "scorecard")
     criteria = {}
@@ -303,6 +312,12 @@ def scorecard(sc: dict) -> dict:
         verdict_raw = "check"
     else:
         verdict_raw = "shelve"
+    confidence = halves / 200
+    adjustments = []
+    base = verdict_raw
+    if stage == "mvp" and verdict_raw == "shelve" and confidence < CONFIDENCE_HIGH_FROM:
+        base = "check"
+        adjustments.append("mvp_test_first")
     gates = []
     if criteria["pain"]["evidence"] == "assumption":
         gates.append("pain_unproven")
@@ -310,9 +325,8 @@ def scorecard(sc: dict) -> dict:
         gates.append("pain_low")
     if someone_pays is False:
         gates.append("nobody_pays")
-    verdict = min(verdict_raw, "check", key=VERDICT_RANK.get) if gates else verdict_raw
+    verdict = min(base, "check", key=VERDICT_RANK.get) if gates else base
 
-    confidence = halves / 200
     if confidence >= CONFIDENCE_HIGH_FROM:
         label = "high"
     elif confidence >= CONFIDENCE_MEDIUM_FROM:
@@ -325,6 +339,9 @@ def scorecard(sc: dict) -> dict:
         "verdict_raw": verdict_raw,
         "gates": gates,
         "verdict": verdict,
+        "verdict_label": verdict_labels(stage)[verdict],
+        "stage": stage,
+        "adjustments": adjustments,
         "confidence": confidence,
         "confidence_label": label,
         "someone_pays": someone_pays,
@@ -366,6 +383,12 @@ def _norm_econ(e: dict) -> dict:
     p = "economics"
     model = _choice(e, "model", p, MODELS, default="subscription")
     subscription = model == "subscription"
+    horizon = _integer(e, "horizon_months", p, default=DEFAULT_HORIZON, lo=1, hi=MAX_HORIZON)
+    marketing_months = _integer(e, "marketing_months", p, default=None, lo=0, hi=MAX_HORIZON)
+    paid_share = _number(e, "paid_traffic_share", p, lo=0, hi=1)
+    if marketing_months is not None and marketing_months < horizon and paid_share is None:
+        raise InputError(f"{p}.paid_traffic_share: обязательно, если бюджет на привлечение кончается раньше "
+                         f"горизонта (marketing_months = {marketing_months}): какая доля трафика приходит за деньги")
     return {
         "model": model,
         "price": _number(e, "price", p, required=True, gt=0),
@@ -383,7 +406,9 @@ def _norm_econ(e: dict) -> dict:
         "cash_now": _number(e, "cash_now", p, lo=0),
         "start_customers": _number(e, "start_customers", p, default=0, lo=0),
         "goal_mrr": _number(e, "goal_mrr", p, gt=0),
-        "horizon_months": _integer(e, "horizon_months", p, default=DEFAULT_HORIZON, lo=1, hi=MAX_HORIZON),
+        "horizon_months": horizon,
+        "marketing_months": marketing_months,
+        "paid_traffic_share": paid_share,
     }
 
 
@@ -496,6 +521,9 @@ def forecast(e: dict, factors: dict | None = None) -> dict:
     months = []
     for m in range(1, e["horizon_months"] + 1):
         traffic = e["traffic_month"] * (1 + e["traffic_growth_month"]) ** (m - 1)
+        budget_on = e["marketing_months"] is None or m <= e["marketing_months"]
+        if not budget_on:
+            traffic *= 1 - (e["paid_traffic_share"] or 0)
         new = traffic * e["cr_visit_signup"] * e["cr_signup_paid"] * k["acq"]
         if subscription:
             customers = customers * (1 - churn) + new
@@ -505,7 +533,7 @@ def forecast(e: dict, factors: dict | None = None) -> dict:
             customers = customers + new
             mrr = None
             revenue = new * price * (1 + e["repeat_purchases"])
-        costs = revenue * e["variable_cost_pct"] + e["marketing_month"] + e["fixed_costs_month"]
+        costs = revenue * e["variable_cost_pct"] + (e["marketing_month"] if budget_on else 0) + e["fixed_costs_month"]
         profit = revenue - costs
         cash = cash + profit
         cumulative += profit
@@ -517,7 +545,7 @@ def forecast(e: dict, factors: dict | None = None) -> dict:
 
     steady = None
     if subscription and e["traffic_growth_month"] == 0 and churn > 0:
-        steady = months[0]["new"] / churn
+        steady = months[-1]["new"] / churn
     target = e["goal_mrr"]
     metric = "mrr" if subscription else "revenue"
     goal_month = None
@@ -542,6 +570,8 @@ def forecast(e: dict, factors: dict | None = None) -> dict:
         "breakeven_month": breakeven_month,
         "cash_known": cash_known,
         "cash_needed": cash_needed,
+        "marketing_months": e["marketing_months"],
+        "paid_traffic_share": e["paid_traffic_share"],
         "cash_out_month": cash_out_month,
         "default_alive": default_alive,
         "mrr_m6": at(6, "mrr"),
@@ -764,7 +794,7 @@ def compute(data: dict) -> dict:
     if project:
         result["project"] = project
     if data.get("scorecard") is not None:
-        result["scorecard"] = scorecard(data["scorecard"])
+        result["scorecard"] = scorecard(data["scorecard"], project["stage"] if project else None)
     if data.get("segments") is not None:
         result["segments"] = segments(data["segments"])
     economics_parts, base = {}, None
@@ -816,9 +846,10 @@ def _md_scorecard(sc):
         if item["capped"]:
             score += f" (указано {_score_text(item['raw_score'])}, ограничено допущением)"
         rows.append([title, fmt_pct(item["weight"]), score, EVIDENCE_LABELS[item["evidence"]], item.get("note") or ""])
-    verdict = f"- **Вердикт:** {VERDICT_LABELS[sc['verdict']]}"
+    labels = verdict_labels(sc.get("stage"))
+    verdict = f"- **Вердикт:** {labels[sc['verdict']]}"
     if sc["verdict"] != sc["verdict_raw"]:
-        verdict += f" (по сумме баллов — «{VERDICT_LABELS[sc['verdict_raw']]}»)"
+        verdict += f" (по сумме баллов — «{labels[sc['verdict_raw']]}»)"
     lines = [
         "### Оценка идеи",
         "",
@@ -829,7 +860,9 @@ def _md_scorecard(sc):
     ]
     if sc["gates"]:
         reasons = "; ".join(GATE_LABELS[g] for g in sc["gates"])
-        lines.append(f"- **Ограничители:** {reasons}. Вердикт не выше «{VERDICT_LABELS['check']}».")
+        lines.append(f"- **Ограничители:** {reasons}. Вердикт не выше «{labels['check']}».")
+    for key in sc.get("adjustments", []):
+        lines.append(f"- **Поправка на стадию:** {ADJUSTMENT_LABELS[key]}.")
     lines.append(f"- **Надёжность:** {CONFIDENCE_LABELS[sc['confidence_label']]} ({fmt_pct(sc['confidence'])})")
     return "\n".join(lines)
 
@@ -981,8 +1014,14 @@ def _md_forecast(fc, ue, currency, has_goal):
     headers = ["Месяц", "Трафик", "Новые платящие" if subscription else "Новые покупатели",
                "Клиентов" if subscription else "Покупателей всего", metric, "Затраты", "Прибыль",
                "Деньги" if fc["base"]["cash_known"] else "Прибыль нарастающим итогом"]
+    budget_note = []
+    months_left = fc["base"].get("marketing_months")
+    if months_left is not None and months_left < len(base_months):
+        share = fc["base"].get("paid_traffic_share") or 0
+        budget_note = [f"Бюджет на привлечение — {months_left} мес.: после этого расходы на привлечение и платная "
+                       f"часть трафика ({fmt_pct(share)}) прекращаются, бесплатный трафик остаётся.", ""]
     return "\n".join([
-        "### Прогноз выручки", "",
+        "### Прогноз выручки", "", *budget_note,
         _table(["Показатель"] + [labels[s] for s in order], rows), "",
         "Базовый сценарий по месяцам:", "",
         _table(headers, monthly),

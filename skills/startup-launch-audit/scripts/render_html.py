@@ -12,6 +12,7 @@ import unicodedata
 
 from calc import (CONFIDENCE_LABELS, CRITERIA, GATE_LABELS, LTV_CAC_BANDS, MINUS, NBSP, SCENARIOS, SEGMENT_PICK_ABOVE,
                   SENSITIVITY_LABELS, SENSITIVITY_STEP, VERDICT_CHECK_FROM, VERDICT_GO_ABOVE, VERDICT_LABELS,
+                  verdict_labels,
                   fmt_money, fmt_num, fmt_pct)
 
 CSS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, "assets", "report.css")
@@ -749,7 +750,7 @@ def _chart_scorecard(calc, currency):
     total, verdict = sc["total"], sc["verdict"]
     parts.append(_line(PAD, y - 4, VB_W - PAD, y - 4, "ch-grid"))
     y += 18
-    verdict_label = VERDICT_LABELS[verdict]
+    verdict_label = sc.get("verdict_label") or VERDICT_LABELS[verdict]
     label_w = _text_width(verdict_label, bold=True)
     icon_x, icon_y = VB_W - PAD - label_w - 16, y - 4
     parts.append(_text(PAD, y, "Итог", "ch-l ch-b"))
@@ -770,7 +771,7 @@ def _chart_scorecard(calc, currency):
     if sc.get("gates"):
         reasons = "; ".join(GATE_LABELS[g] for g in sc["gates"])
         word = "Ограничитель" if len(sc["gates"]) == 1 else "Ограничители"
-        notes.append(f"{word}: {reasons}. Вердикт не выше «{VERDICT_LABELS['check']}».")
+        notes.append(f"{word}: {reasons}. Вердикт не выше «{verdict_labels(sc.get('stage'))['check']}».")
     notes.append(f"Надёжность: {CONFIDENCE_LABELS[sc['confidence_label']]} ({fmt_pct(sc['confidence'])})")
     for note in notes:
         for line in _wrap(note, VB_W - 2 * PAD, SMALL):

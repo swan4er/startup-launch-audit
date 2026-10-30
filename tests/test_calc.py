@@ -106,6 +106,41 @@ class ScorecardTests(unittest.TestCase):
         self.assertFalse(r["criteria"]["pain"]["capped"])
         self.assertEqual(r["gates"], ["pain_unproven", "pain_low"])
 
+    def _card(self, score, evidence="estimate", pain=None, someone_pays=True):
+        card = {k: {"score": score, "evidence": evidence} for k in
+                ("pain", "som", "growth", "ability_to_pay", "build_ease", "advantage")}
+        if pain:
+            card["pain"] = pain
+        card["someone_pays"] = someone_pays
+        return card
+
+    def test_mvp_low_total_medium_confidence_means_test_first(self):
+        sc = calc.scorecard(self._card(4, "estimate"), "mvp")
+        self.assertEqual(sc["verdict_raw"], "shelve")
+        self.assertEqual(sc["verdict"], "check")
+        self.assertEqual(sc["adjustments"], ["mvp_test_first"])
+        self.assertEqual(sc["verdict_label"], "Сначала проверить спрос")
+
+    def test_mvp_low_total_high_confidence_means_stop(self):
+        sc = calc.scorecard(self._card(4, "fact"), "mvp")
+        self.assertEqual(sc["verdict"], "shelve")
+        self.assertEqual(sc["adjustments"], [])
+        self.assertEqual(sc["verdict_label"], "Не вкладываться — менять продукт или сегмент")
+
+    def test_mvp_go_label(self):
+        sc = calc.scorecard(self._card(9, "fact"), "mvp")
+        self.assertEqual(sc["verdict_label"], "Вкладываться в рост")
+
+    def test_idea_stage_keeps_shelve(self):
+        sc = calc.scorecard(self._card(4, "estimate"), "idea")
+        self.assertEqual(sc["verdict"], "shelve")
+        self.assertEqual(sc["verdict_label"], "Отложить")
+
+    def test_mvp_markdown_shows_adjustment(self):
+        md = calc.render_md(calc.compute({"project": {"name": "x", "stage": "mvp"}, "scorecard": self._card(4)}))
+        self.assertIn("Сначала проверить спрос", md)
+        self.assertIn("Поправка на стадию", md)
+
     def test_boundaries(self):
         cases = [
             (scores_for(7, 8, 7, 8, 7, 8), 7.5, "check"),
@@ -488,6 +523,30 @@ class ForecastTests(unittest.TestCase):
         self.assertEqual(f["breakeven_month"], 5)
         self.assertIsNone(f["cash_out_month"])
         self.assertTrue(f["default_alive"])
+
+    def test_budget_ends_paid_traffic_and_spend_stop(self):
+        e = {**BASE, "marketing_months": 3, "paid_traffic_share": 0.5}
+        f = calc.forecast(e)
+        m3, m4 = f["months"][2], f["months"][3]
+        self.assertAlmostEqual(m3["traffic"], 1000)
+        self.assertAlmostEqual(m4["traffic"], 500)
+        self.assertAlmostEqual(m3["costs"], m3["revenue"] * 0.4 + 10000)
+        self.assertAlmostEqual(m4["costs"], m4["revenue"] * 0.4)
+        self.assertAlmostEqual(f["steady_customers"], 2.5 / 0.15)
+
+    def test_budget_end_requires_paid_share(self):
+        with self.assertRaises(calc.InputError):
+            calc.forecast({**BASE, "marketing_months": 3})
+
+    def test_budget_covering_horizon_changes_nothing(self):
+        a = calc.forecast(BASE)
+        b = calc.forecast({**BASE, "marketing_months": 36})
+        self.assertAlmostEqual(a["months"][-1]["cash"], b["months"][-1]["cash"])
+        self.assertAlmostEqual(a["steady_customers"], b["steady_customers"])
+
+    def test_budget_note_in_markdown(self):
+        md = calc.render_md(calc.compute({"economics": {**BASE, "marketing_months": 3, "paid_traffic_share": 0.5}}))
+        self.assertIn("Бюджет на привлечение — 3 мес.", md)
 
     def test_unknown_cash_is_not_treated_as_zero(self):
         f = calc.forecast(BASE)
