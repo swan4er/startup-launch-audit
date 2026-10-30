@@ -1,0 +1,11 @@
+{
+  "name": "startup-launch-audit",
+  "version": "1.0.0",
+  "description": "Честный разбор идеи или запущенного стартапа: спрос, конкуренты, рынок, юнит-экономика, каналы, лендинг, метрики — вердикт с надёжностью и отчёт в Markdown и HTML.",
+  "author": {
+    "name": "Stanislav",
+    "url": "https://github.com/swan4er"
+  },
+  "homepage": "https://github.com/swan4er/startup-launch-audit",
+  "license": "CC-BY-NC-4.0"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "startup-launch-audit",
+  "description": "Разбор идеи или стартапа от проблемы до первых платящих",
+  "owner": {
+    "name": "Stanislav",
+    "url": "https://github.com/swan4er"
+  },
+  "plugins": [
+    {
+      "name": "startup-launch-audit",
+      "source": "./",
+      "description": "Честный разбор идеи или запущенного стартапа с вердиктом и отчётом в Markdown и HTML"
+    }
+  ]
+}

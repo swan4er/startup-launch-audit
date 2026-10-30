@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Разбор: Telegram-бот для салонов красоты — 30.10.2026</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f9f9f7;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --track: #e9e8e2;
+  --border: rgba(11, 11, 11, 0.12);
+  --link: #1c5cab;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --ord-1: #86b6ef;
+  --ord-2: #3987e5;
+  --ord-3: #1c5cab;
+  --ok: #0ca30c;
+  --warn: #fab219;
+  --bad: #d03b3b;
+  --callout-bg: #eef3fa;
+  --callout-bar: #2a78d6;
+  --head-bg: #f0efeb;
+  --code-bg: #efeee9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --track: #2b2b29;
+    --border: rgba(255, 255, 255, 0.12);
+    --link: #86b6ef;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --ord-1: #184f95;
+    --ord-2: #2a78d6;
+    --ord-3: #6da7ec;
+    --callout-bg: #152030;
+    --callout-bar: #3987e5;
+    --head-bg: #242422;
+    --code-bg: #242422;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d0d0d;
+  --surface: #1a1a19;
+  --ink: #f0efec;
+  --ink-2: #c3c2b7;
+  --muted: #898781;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --track: #2b2b29;
+  --border: rgba(255, 255, 255, 0.12);
+  --link: #86b6ef;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --ord-1: #184f95;
+  --ord-2: #2a78d6;
+  --ord-3: #6da7ec;
+  --callout-bg: #152030;
+  --callout-bar: #3987e5;
+  --head-bg: #242422;
+  --code-bg: #242422;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.report {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.3;
+  scroll-margin-top: 12px;
+}
+
+h1 {
+  margin: 0 0 0.6em;
+  padding-right: 52px;
+  font-size: 1.75rem;
+  line-height: 1.25;
+}
+
+h2 {
+  margin: 2.2em 0 0.6em;
+  padding-top: 0.9em;
+  border-top: 1px solid var(--border);
+  font-size: 1.3rem;
+}
+
+h3 {
+  margin: 1.6em 0 0.5em;
+  font-size: 1.1rem;
+}
+
+h4 {
+  margin: 1.3em 0 0.4em;
+  font-size: 1rem;
+}
+
+p {
+  margin: 0.8em 0;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.15em;
+}
+
+ul,
+ol {
+  margin: 0.8em 0;
+  padding-left: 1.4rem;
+}
+
+li {
+  margin: 0.25em 0;
+}
+
+li > ul,
+li > ol {
+  margin: 0.25em 0;
+}
+
+li.task {
+  list-style: none;
+}
+
+.task-box {
+  display: inline-block;
+  width: 1.4rem;
+  margin-left: -1.4rem;
+  font-size: 1.1em;
+}
+
+hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+blockquote.callout {
+  margin: 1.2rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--callout-bar);
+  border-radius: 0 8px 8px 0;
+  background: var(--callout-bg);
+}
+
+blockquote.callout > :first-child {
+  margin-top: 0;
+}
+
+blockquote.callout > :last-child {
+  margin-bottom: 0;
+}
+
+code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--code-bg);
+  font: 0.9em/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+pre {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--code-bg);
+}
+
+pre code {
+  padding: 0;
+  background: none;
+  overflow-wrap: normal;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.2rem 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--grid);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.table-wrap th {
+  background: var(--head-bg);
+  font-weight: 600;
+}
+
+.table-wrap tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.toc {
+  margin: 1.2rem 0 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.toc summary {
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.toc ul {
+  margin: 0;
+  padding: 0 1rem 0.8rem;
+  list-style: none;
+  columns: 2 280px;
+  column-gap: 2rem;
+}
+
+.toc li {
+  margin: 0;
+  padding: 0.15rem 0;
+  break-inside: avoid;
+}
+
+.toc a {
+  text-decoration: none;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-toggle:focus-visible,
+.toc summary:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: 2px;
+}
+
+figure.chart {
+  margin: 1.4rem 0;
+  padding: 12px 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.chart-svg text {
+  fill: var(--ink);
+  font-size: 12.5px;
+}
+
+.chart-svg .ch-title {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.chart-svg .ch-2 {
+  fill: var(--ink-2);
+}
+
+.chart-svg .ch-sm {
+  font-size: 11px;
+}
+
+.chart-svg .ch-b,
+.chart-svg .ch-v {
+  font-weight: 600;
+}
+
+.chart-svg .ch-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-svg .ch-halo {
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.chart-svg .ch-grid {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.chart-svg .ch-axis {
+  stroke: var(--axis);
+  stroke-width: 1;
+}
+
+.chart-svg .ch-zero {
+  stroke: var(--ink-2);
+  stroke-width: 1.25;
+}
+
+.chart-svg .ch-ref {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.chart-svg .ch-base-line {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.chart-svg .ch-tick-mark {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.chart-svg .ch-leader {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.chart-svg .ch-goal-line,
+.chart-svg .ch-goal-key {
+  stroke: var(--ink-2);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+}
+
+.chart-svg .ch-track {
+  fill: var(--track);
+}
+
+.chart-svg .ch-bar {
+  fill: var(--series-1);
+}
+
+.chart-svg .ch-bar-dim {
+  fill: var(--muted);
+}
+
+.chart-svg .ch-bar-status,
+.chart-svg .st-icon {
+  fill: var(--c);
+}
+
+.chart-svg .ch-ord-1 {
+  fill: var(--ord-1);
+}
+
+.chart-svg .ch-ord-2 {
+  fill: var(--ord-2);
+}
+
+.chart-svg .ch-ord-3 {
+  fill: var(--ord-3);
+}
+
+.chart-svg .ch-ghost {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 2;
+}
+
+.chart-svg .ch-swatch {
+  stroke: none;
+}
+
+.chart-svg .ch-var-low {
+  fill: var(--series-1);
+}
+
+.chart-svg .ch-var-high {
+  fill: var(--series-2);
+}
+
+.chart-svg .st-go {
+  --c: var(--ok);
+}
+
+.chart-svg .st-check {
+  --c: var(--warn);
+}
+
+.chart-svg .st-shelve {
+  --c: var(--bad);
+}
+
+.chart-svg .sc-base {
+  --c: var(--series-1);
+}
+
+.chart-svg .sc-pess {
+  --c: var(--series-2);
+}
+
+.chart-svg .sc-opt {
+  --c: var(--series-3);
+}
+
+.chart-svg .ch-line,
+.chart-svg .ch-key {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-svg .ch-key {
+  stroke-width: 3;
+}
+
+.chart-svg .ch-key.ch-goal-key {
+  stroke: var(--ink-2);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+}
+
+.chart-svg .ch-line-base {
+  stroke-width: 2.5;
+}
+
+.chart-svg .ch-dot {
+  fill: var(--c);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.chart-svg .mk-circle {
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.chart-svg .mk-0 {
+  fill: var(--ord-1);
+}
+
+.chart-svg .mk-1 {
+  fill: var(--ord-2);
+}
+
+.chart-svg .mk-2 {
+  fill: var(--ord-3);
+}
+
+.chart-svg .mk-dot {
+  fill: var(--ink-2);
+}
+
+@media (min-width: 900px) {
+  body {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  figure.chart {
+    padding: 8px 4px;
+    overflow-x: auto;
+  }
+
+  .chart-svg {
+    min-width: 460px;
+  }
+
+  .table-wrap table {
+    font-size: 0.85rem;
+  }
+
+  .toc ul {
+    columns: 1;
+  }
+}
+
+@media print {
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --track: #e9e8e2;
+    --border: rgba(11, 11, 11, 0.2);
+    --link: #1c5cab;
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --ord-1: #86b6ef;
+    --ord-2: #3987e5;
+    --ord-3: #1c5cab;
+    --callout-bg: #eef3fa;
+    --callout-bar: #2a78d6;
+    --head-bg: #f0efeb;
+    --code-bg: #efeee9;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+
+  body {
+    font-size: 10.5pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report {
+    max-width: none;
+    padding: 0 2px;
+  }
+
+  .toc,
+  .theme-toggle {
+    display: none;
+  }
+
+  figure.chart,
+  .table-wrap,
+  blockquote.callout,
+  pre,
+  tr {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+
+  p:has(+ .table-wrap),
+  p:has(+ figure.chart) {
+    break-after: avoid;
+  }
+
+  .table-wrap {
+    overflow: visible;
+  }
+
+  .table-wrap table {
+    font-size: 8.5pt;
+  }
+
+  .chart-svg {
+    max-width: 125mm;
+  }
+}
+</style>
+<script>
+(function () {
+  var root = document.documentElement;
+  var key = "report-theme";
+  var dark = window.matchMedia("(prefers-color-scheme: dark)");
+  try {
+    var saved = localStorage.getItem(key);
+    if (saved === "dark" || saved === "light") root.setAttribute("data-theme", saved);
+  } catch (e) {}
+  function current() { return root.getAttribute("data-theme") || (dark.matches ? "dark" : "light"); }
+  document.addEventListener("DOMContentLoaded", function () {
+    var toc = document.getElementById("toc");
+    if (toc && window.matchMedia("(max-width: 640px)").matches) toc.removeAttribute("open");
+    document.getElementById("theme-toggle").addEventListener("click", function () {
+      var next = current() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem(key, next); } catch (e) {}
+    });
+  });
+})();
+</script>
+</head>
+<body>
+<div class="report">
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Сменить тему оформления" title="Сменить тему">◐</button>
+<h1 id="s-1">Разбор: Telegram-бот для салонов красоты — 30.10.2026</h1>
+<blockquote class="callout">
+<p>Стадия: идея · Рынок: РФ (старт — Казань) · Разбор: полный, с поиском</p>
+</blockquote>
+<nav class="toc" aria-label="Содержание">
+<details id="toc" open>
+<summary>Содержание</summary>
+<ul>
+<li><a href="#s-2">1. Коротко</a></li>
+<li><a href="#s-3">2. Проблема и клиент</a></li>
+<li><a href="#s-4">3. Спрос и конкуренты</a></li>
+<li><a href="#s-5">4. Рынок и прогноз</a></li>
+<li><a href="#s-8">5. Оценка идеи</a></li>
+<li><a href="#s-9">6. Портрет клиента</a></li>
+<li><a href="#s-10">7. Позиционирование и оффер</a></li>
+<li><a href="#s-11">8. Экономика и прогноз выручки</a></li>
+<li><a href="#s-16">9. Каналы</a></li>
+<li><a href="#s-17">10. Лендинг</a></li>
+<li><a href="#s-18">11. Метрики (план)</a></li>
+<li><a href="#s-19">12. Масштабирование и PMF (план)</a></li>
+<li><a href="#s-20">13. Риски и допущения</a></li>
+<li><a href="#s-21">14. План на 7 дней (около 10 часов)</a></li>
+<li><a href="#s-22">Приложения</a></li>
+</ul>
+</details>
+</nav>
+<h2 id="s-2">1. Коротко</h2>
+<blockquote class="callout">
+<p><strong>Вердикт: Отложить</strong> — итог 4,6 из 10, надёжность низкая (30 %).</p>
+</blockquote>
+<p>«Отложить» значит: бота сейчас не писать и 60 000 ₽ не тратить. Идею нужно менять и проверять без кода; путь разворота — в разделе 13.</p>
+<ul>
+<li><strong>Почему:</strong> за — в салонах уже платят за запись, напоминания и рассылки (YCLIENTS от 412 ₽, Бьюти Бот от 990 ₽ в месяц, <a href="https://crmindex.ru/services/yclients2" target="_blank" rel="noopener noreferrer">факт</a>), а клиенты Бьюти Бота ругают его в 8 отзывах из 8 (<a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">факт</a>); бота ты соберёшь сам. Против — у идеи нет ни платящего клиента, ни одного поступка в её пользу, а напоминание о записи уже есть у аналогов. Даже если разговоры и предоплаты подтвердят боль, итог вырастет лишь до 5,7: рынок Казани мал, отличие слабое.</li>
+<li><strong>Главные риски:</strong><ol>
+<li>Спрос не подтверждён. Первого платящего клиента ты назвать не можешь. Владелица салона сестры сказала «было бы здорово, если недорого» — это мнение, а не поступок.</li>
+<li>Канал. Telegram-бот не может написать клиенту первым (<a href="https://core.telegram.org/bots" target="_blank" rel="noopener noreferrer">факт</a>). Сам Telegram в России с 10 февраля 2026 года замедляют (<a href="https://ru.wikipedia.org/wiki/%D0%91%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0_Telegram_%D0%B2_%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D0%B8_%282026%29" target="_blank" rel="noopener noreferrer">факт</a>). WhatsApp, где пишет сестра, заблокирован (<a href="https://ru.themoscowtimes.com/2026/02/12/whatsapp-poobeschal-prinyat-meri-dlya-sohraneniya-dostupa-kmessendzheru-vrossii-posle-blokirovki-a187041" target="_blank" rel="noopener noreferrer">факт</a>).</li>
+<li>Отличие и деньги. Одно напоминание не продаётся. Цель 100 000 ₽ в месяц при заложенной воронке недостижима: потолок выручки 52 800 ₽ в месяц [допущение], LTV/CAC 2,38 при нужных 3 [допущение].</li>
+</ol>
+</li>
+<li><strong>Сделай сегодня (30–60 минут):</strong> напиши сестре и попроси по последним 20 неявкам записать три вещи: писали ли клиенту накануне, на какую сумму была запись, в какой программе или тетради ведутся записи. Спроси, согласна ли владелица на разговор на 30 минут на этой неделе.</li>
+<li><strong>Дальше:</strong> (1) 5 разговоров с владельцами и администраторами салонов Казани за 2 недели; (2) ручной платный пилот на 1–2 салонах без кода: свободные окна предлагаешь клиентам сам, считаешь заполненные.</li>
+</ul>
+<figure class="chart chart-scorecard">
+<svg class="chart-svg chart-scorecard" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 414" width="100%" role="img"><title>Оценка идеи</title><desc>Итог 4,6 из 10, вердикт: Отложить. Боль реальная — 5; Объём рынка (SOM) — 2; Рост рынка — 5; Платёжеспособность — 6; Простота запуска — 7; Преимущество — 3</desc><text x="14" y="20" class="ch-title">Оценка идеи, баллы из 10</text><g><title>Боль реальная: 5</title><text x="14" y="47" class="ch-l">Боль реальная · вес 25 %</text><text x="406" y="47" class="ch-2 ch-sm" text-anchor="end">только допущения</text><rect class="ch-track" x="14" y="54" width="359.2" height="10" rx="4"/><path class="ch-bar-dim" d="M14,54h175.6a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-175.6z"/><text x="406" y="63" class="ch-v ch-num" text-anchor="end">5</text></g><g><title>Объём рынка (SOM): 2</title><text x="14" y="87" class="ch-l">Объём рынка (SOM) · вес 20 %</text><rect class="ch-track" x="14" y="94" width="359.2" height="10" rx="4"/><path class="ch-bar" d="M14,94h67.8a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-67.8z"/><text x="406" y="103" class="ch-v ch-num" text-anchor="end">2</text></g><g><title>Рост рынка: 5</title><text x="14" y="127" class="ch-l">Рост рынка · вес 10 %</text><rect class="ch-track" x="14" y="134" width="359.2" height="10" rx="4"/><path class="ch-bar" d="M14,134h175.6a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-175.6z"/><text x="406" y="143" class="ch-v ch-num" text-anchor="end">5</text></g><g><title>Платёжеспособность: 6</title><text x="14" y="167" class="ch-l">Платёжеспособность · вес 15 %</text><rect class="ch-track" x="14" y="174" width="359.2" height="10" rx="4"/><path class="ch-bar" d="M14,174h211.5a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-211.5z"/><text x="406" y="183" class="ch-v ch-num" text-anchor="end">6</text></g><g><title>Простота запуска: 7</title><text x="14" y="207" class="ch-l">Простота запуска · вес 15 %</text><rect class="ch-track" x="14" y="214" width="359.2" height="10" rx="4"/><path class="ch-bar" d="M14,214h247.4a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-247.4z"/><text x="406" y="223" class="ch-v ch-num" text-anchor="end">7</text></g><g><title>Преимущество: 3</title><text x="14" y="247" class="ch-l">Преимущество · вес 15 %</text><text x="406" y="247" class="ch-2 ch-sm" text-anchor="end">только допущения</text><rect class="ch-track" x="14" y="254" width="359.2" height="10" rx="4"/><path class="ch-bar-dim" d="M14,254h103.8a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-103.8z"/><text x="406" y="263" class="ch-v ch-num" text-anchor="end">3</text></g><line class="ch-grid" x1="14" y1="272" x2="406" y2="272"/><text x="14" y="294" class="ch-l ch-b">Итог</text><rect class="st-icon st-shelve" x="310.2" y="285.5" width="9" height="9"/><text x="406" y="294" class="ch-l ch-b" text-anchor="end">Отложить</text><rect class="ch-track" x="14" y="304" width="359.2" height="14" rx="4"/><path class="ch-bar-status st-shelve" d="M14,304h161.2a4,4 0 0 1 4,4v6a4,4 0 0 1 -4,4h-161.2z"/><line class="ch-tick-mark" x1="229.5" y1="301" x2="229.5" y2="321"/><text x="229.5" y="334" class="ch-2 ch-sm" text-anchor="middle">6</text><line class="ch-tick-mark" x1="283.4" y1="301" x2="283.4" y2="321"/><text x="283.4" y="334" class="ch-2 ch-sm" text-anchor="middle">7,5</text><text x="406" y="316" class="ch-v ch-b ch-num" text-anchor="end">4,6</text><text x="14" y="354" class="ch-2 ch-sm">Ниже 6 — отложить, выше 7,5 — делать</text><text x="14" y="368" class="ch-2 ch-sm">Ограничитель: боль держится только на допущениях. Вердикт</text><text x="14" y="382" class="ch-2 ch-sm">не выше «Сначала проверить».</text><text x="14" y="396" class="ch-2 ch-sm">Надёжность: низкая (30 %)</text></svg>
+</figure>
+<h2 id="s-3">2. Проблема и клиент</h2>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Вопрос</th><th scope="col">Ответ</th><th scope="col">Метка</th></tr></thead>
+<tbody>
+<tr><td>Кто конкретно платит?</td><td>Не определён. На вопрос о первом клиенте: «не знаю»; какие салоны — «наверное, любые». Единственный кандидат — владелица салона на 6 мастеров в Казани, где сестра администратор (тип салона не назван). Её реакция: «было бы здорово, если недорого». Пользоваться ботом будет администратор, платить — владелица.</td><td>[допущение] пользователя; главный риск</td></tr>
+<tr><td>Как решает сейчас?</td><td>Администратор накануне вручную пишет клиентам в WhatsApp. Сколько времени это занимает и какая в салоне программа записи — неизвестно. Как сестра пишет в заблокированном WhatsApp, тоже неизвестно.</td><td>[факт] со слов пользователя</td></tr>
+<tr><td>Почему перейдёт?</td><td>«Экономит время администратору и деньги на неявках»; на вопрос «что и на сколько» — «не знаю». Нестыковка: сестра уже напоминает накануне, а 2–3 неявки в неделю остаются. Значит, автоматическое напоминание само по себе от неявок не лечит.</td><td>[допущение] пользователя; нестыковка — [оценка] по одному салону</td></tr>
+</tbody>
+</table></div>
+<p>Проблема со слов администратора: «клиенты забывают о записи, 2–3 неявки в неделю, окна пустуют» (салон сестры, 6 мастеров). Период и способ подсчёта неизвестны. Последний случай получить не удалось: сколько неявившихся получили напоминание накануне, пользователь не знает.</p>
+<p><strong>Сила боли.</strong> Ступень лестницы доказательств — «мнение», самая нижняя. Лестница: мнение → намерение → оставил контакт → внёс предоплату → пользуется регулярно. Реплика владелицы — «приятно иметь», а не «необходимо»: на таком бизнес не строят. Контакт никто не оставил, доступ не просил, денег не предлагал. Следующие ступени достигаются разговорами (приложение А) и платным пилотом (раздел 14).</p>
+<h2 id="s-4">3. Спрос и конкуренты</h2>
+<p><strong>Чек-лист спроса</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Пункт</th><th scope="col">Статус</th><th scope="col">Основание</th></tr></thead>
+<tbody>
+<tr><td>Больше 1 000 запросов в месяц</td><td>не проверено</td><td>сервис статистики запросов требует вход</td></tr>
+<tr><td>Интерес растёт или стабилен</td><td>не проверено</td><td>число салонов в России +18,6 % за год (<a href="https://finance.mail.ru/article/sber-chislo-dejstvuyuschih-salonov-krasotyi-v-rf-v-i-kvartale-uvelichilos-na-186-69209651/" target="_blank" rel="noopener noreferrer">факт</a>) — это рост числа клиентов, а не интереса к решению</td></tr>
+<tr><td>Минимум 3 платных конкурента</td><td>да</td><td>YCLIENTS, Бьюти Бот, DIKIDI (платные тарифы), Saby Clients</td></tr>
+<tr><td>У конкурентов негативные отзывы</td><td>да</td><td>Бьюти Бот: 8 из 8 отрицательные</td></tr>
+<tr><td>На форумах и в чатах жалуются на проблему</td><td>не проверено</td><td>сообщества владельцев салонов не найдены</td></tr>
+</tbody>
+</table></div>
+<p>Выполнено 2 из 5, остальное не проверено. Сильных сигналов нет: незнакомые люди не платят, прототипа нет, сами никто не пишет.</p>
+<p><strong>Конкуренты</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Название</th><th scope="col">Цена за месяц</th><th scope="col">Что делает</th><th scope="col">Что ругают</th><th scope="col">Ссылка, дата</th></tr></thead>
+<tbody>
+<tr><td>YCLIENTS</td><td>412 ₽ (1 пользователь), 943 ₽ (до 3), 3 314 ₽ (до 10), 4 971 ₽ (до 15); цены со сторонней страницы, дата неизвестна</td><td>на сайте заявлены автонапоминания, массовые рассылки, уведомления за 0 ₽ через приложение, MAX, ВКонтакте и почту; Telegram и WhatsApp среди бесплатных каналов не названы</td><td>отзывы не искал; «горящих» окон и листа ожидания на открытой части не нашёл</td><td><a href="https://crmindex.ru/services/yclients2" target="_blank" rel="noopener noreferrer">цены</a>, <a href="https://www.yclients.ru/info/pricing" target="_blank" rel="noopener noreferrer">сайт</a>; 30.10.2026</td></tr>
+<tr><td>DIKIDI</td><td>бесплатный тариф; платные LITE, PRO, VIP — цен в рублях не нашёл</td><td>бесплатный: запись, онлайн-запись, PUSH-уведомления, предоплата; LITE: ручная отправка уведомлений</td><td>отзывы не искал; статья 2023 года</td><td><a href="https://support.dikidi.net/ru/knowledge-bases/4/articles/930-novaya-linejka-tarifov-v-dikidi" target="_blank" rel="noopener noreferrer">статья</a>; 30.10.2026</td></tr>
+<tr><td>Saby Clients</td><td>цена не найдена</td><td>автоматический лист ожидания: «Освободилось окно — Saby сразу предложит подходящего клиента из листа ожидания.»</td><td>отзывы не искал</td><td><a href="https://saby.ru/news/salons/06c3ebf8-5649-441f-9cb6-56e92b0c0a22" target="_blank" rel="noopener noreferrer">страница</a>; публикация 30.07.2026</td></tr>
+<tr><td>Бьюти Бот</td><td>от 990 ₽ после 7 бесплатных дней; зависит от числа сотрудников</td><td>в WhatsApp напоминает и подтверждает запись, возвращает давно не приходивших, рассылает по базе YCLIENTS или Excel (до 700 в день)</td><td>8 отзывов из 8 отрицательные, показатель 1,3</td><td><a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">страница</a>; 30.10.2026</td></tr>
+</tbody>
+</table></div>
+<p>Платных конкурентов больше трёх: за напоминания и рассылки в салонах платят. Платящий спрос именно на связку «бот в Telegram + заполнение окон» не доказан. Telegram-ботов для записи с ценами я не нашёл — это пробел поиска, а не доказательство, что их нет.</p>
+<p><strong>Боли из отзывов</strong> (8 авторов Бьюти Бота, 29.12.2025–30.07.2026, <a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">факт</a>, 1 источник; отзывы на агрегаторах склонны к жалобам):</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Боль</th><th scope="col">Частота × сила</th><th scope="col">Цитата</th></tr></thead>
+<tbody>
+<tr><td>Блокировка номеров WhatsApp</td><td>3 из 8 × 3</td><td>«Моментальная блокировка всех номеров обеспечена»; «аккаунты блокируют, сообщения регулярно не отправляются»</td></tr>
+<tr><td>Сообщения не уходят</td><td>4 из 8 × 3</td><td>«Уведомления не отправляются»; «Чат бот не отправляет напоминания о записи уже второй день»</td></tr>
+<tr><td>Не возвращают деньги</td><td>4 из 8 × 2</td><td>«ребята продают воздух»</td></tr>
+<tr><td>Списания после отключения</td><td>1 из 8 × 2</td><td>«а деньги до сих пор списываются»</td></tr>
+<tr><td>Номер владельца прикрепили без согласия</td><td>1 из 8 × 1</td><td>«Прикрепили номер владельца по своему собственному желанию»</td></tr>
+</tbody>
+</table></div>
+<p>Похвалы нет ни в одном из восьми.</p>
+<p><strong>Стоп-чек</strong></p>
+<ul>
+<li><strong>Бесплатный аналог — частично.</strong> У YCLIENTS заявлены автонапоминания и уведомления за 0 ₽ (<a href="https://www.yclients.ru/price" target="_blank" rel="noopener noreferrer">факт</a>), у DIKIDI в бесплатном тарифе есть PUSH (<a href="https://support.dikidi.net/ru/knowledge-bases/4/articles/930-novaya-linejka-tarifov-v-dikidi" target="_blank" rel="noopener noreferrer">факт</a>). Часть боли закрыта внутри подписок, которые у салонов могут уже стоять. Одно «напоминание» не продаётся.</li>
+<li><strong>Известный провал — отдельно не искал.</strong> Из найденного: 8 из 8 отзывов на Бьюти Бота про блокировки, недоставку и невозврат денег. Это провал исполнения у аналога, а не закрытие рынка.</li>
+<li><strong>Закон.</strong> Статья 18 закона «О рекламе» называется «Реклама, распространяемая по сетям электросвязи» (<a href="https://www.consultant.ru/document/cons_doc_LAW_58968/" target="_blank" rel="noopener noreferrer">факт</a>). Текст статьи не открылся. По моим данным без источника [оценка], такая реклама допускается только с предварительного согласия адресата. Рассылка свободных окон — реклама, согласие нужно (удобно брать его в боте при нажатии «Старт»). Напоминание о записи — информирование. Проверь у юриста. Персональные данные клиентов (закон № 152-ФЗ) не проверялись.</li>
+<li><strong>Платформа — подтверждено, решение «продолжаем как есть» принято 30.10.2026.</strong> Роскомнадзор с 10 февраля 2026 года замедляет Telegram; полной блокировки в найденных источниках нет. Данные об аудитории расходятся: по Mediascope в августе в Telegram заходило 33,8 млн человек в день (на 33 % меньше, чем в апреле), по Digital Budget месячная аудитория на Android за год выросла с 91 до 114 млн (<a href="https://www.mentoday.ru/life/news/20-10-2026/byudjetnye-milliardy-v-pesok-zablokirovannye-whatsapp-i-telegram-snova-nachali-rasti-v-rossii/" target="_blank" rel="noopener noreferrer">факт</a>, 1 вторичный источник). Дуров 4 апреля заявил, что 65 млн россиян пользуются Telegram ежедневно через VPN (программу обхода блокировок) — это его слова, не измерение. WhatsApp заблокирован с февраля 2026 года. Бот не может начать разговор: клиент должен сам найти бота и нажать «Старт». У салона есть телефоны клиентов, но написать по ним из бота нельзя.</li>
+</ul>
+<h2 id="s-5">4. Рынок и прогноз</h2>
+<h3 id="s-6">Сегменты</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">№</th><th scope="col">Сегмент</th><th scope="col">Размер</th><th scope="col">Боль</th><th scope="col">Готовность платить</th><th scope="col">Лёгкость продажи</th><th scope="col">Итог</th><th scope="col">Вывод</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Салоны красоты на 3–10 мастеров в Казани (решает владелец)</td><td>932 салонов (все размеры, оценка)</td><td>6</td><td>6</td><td>4</td><td>5,3</td><td>Лучший из списка, но итог не выше 7</td></tr>
+<tr><td>2</td><td>Крупные салоны и сети (10+ мастеров, несколько точек)</td><td>—</td><td>5</td><td>8</td><td>2</td><td>5,0</td><td>—</td></tr>
+<tr><td>3</td><td>Частные мастера и студии на 1–2 кресла</td><td>—</td><td>5</td><td>3</td><td>5</td><td>4,3</td><td>—</td></tr>
+</tbody>
+</table></div>
+<p>Стартовый — салоны на 3–10 мастеров в Казани. Порог 7 не проходит никто, поэтому берём лучший как гипотезу и проверяем разговорами. Баллы — [допущение] агента (основание: цены аналогов, 8 отзывов, один салон; интервью не было). Отброшены: частные мастера — у аналогов для них тариф 412 ₽ и бесплатный тариф DIKIDI, цена 1 500 ₽ не выдержит; сети — долгая продажа, у тебя нет знакомых и референсов.</p>
+<figure class="chart chart-segments">
+<svg class="chart-svg chart-segments" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 219" width="100%" role="img"><title>Сегменты</title><desc>Итоговая оценка сегментов из 10: Салоны красоты на 3–10 мастеров в Казани (решает владелец) — 5,3; Крупные салоны и сети (10+ мастеров, несколько точек) — 5,0; Частные мастера и студии на 1–2 кресла — 4,3</desc><text x="14" y="20" class="ch-title">Сегменты: итоговая оценка из 10</text><line class="ch-ref" x1="265.4" y1="30" x2="265.4" y2="185"/><rect class="ch-track" x="14" y="68" width="359.2" height="10" rx="4"/><path class="ch-bar-dim" d="M14,68h186.4a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-186.4z"/><line class="ch-tick-mark" x1="265.4" y1="65" x2="265.4" y2="81"/><rect class="ch-track" x="14" y="125" width="359.2" height="10" rx="4"/><path class="ch-bar-dim" d="M14,125h175.6a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-175.6z"/><line class="ch-tick-mark" x1="265.4" y1="122" x2="265.4" y2="138"/><rect class="ch-track" x="14" y="168" width="359.2" height="10" rx="4"/><path class="ch-bar-dim" d="M14,168h150.5a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-150.5z"/><line class="ch-tick-mark" x1="265.4" y1="165" x2="265.4" y2="181"/><text x="14" y="47" class="ch-l ch-b ch-halo">Салоны красоты на 3–10</text><text x="14" y="61" class="ch-l ch-b ch-halo">мастеров в Казани (решает…</text><text x="406" y="47" class="ch-2 ch-sm ch-halo" text-anchor="end">лучший, но ниже 7</text><text x="406" y="77" class="ch-v ch-num" text-anchor="end">5,3</text><text x="14" y="104" class="ch-l ch-halo">Крупные салоны и сети (10+ мастеров, несколько</text><text x="14" y="118" class="ch-l ch-halo">точек)</text><text x="406" y="134" class="ch-v ch-num" text-anchor="end">5,0</text><text x="14" y="161" class="ch-l ch-halo">Частные мастера и студии на 1–2 кресла</text><text x="406" y="177" class="ch-v ch-num" text-anchor="end">4,3</text><text x="265.4" y="199" class="ch-2 ch-sm" text-anchor="middle">порог 7</text></svg>
+</figure>
+<h3 id="s-7">Размер рынка</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Показатель</th><th scope="col">Значение</th><th scope="col">Как посчитано</th></tr></thead>
+<tbody>
+<tr><td>TAM — весь рынок</td><td>1 265 832 000 ₽ в год</td><td>70 324 салонов × 18 000 ₽ в год</td></tr>
+<tr><td>SAM — доступный рынок</td><td>16 776 000 ₽ в год</td><td>932 салонов × 18 000 ₽ в год</td></tr>
+<tr><td>SOM по доле рынка</td><td>503 280 ₽ в год</td><td>3 % SAM за 3 года</td></tr>
+<tr><td>SOM по мощности воронки</td><td>606 400 ₽ в год</td><td>выручка базового прогноза за месяцы 25–36</td></tr>
+<tr><td>SOM — итог</td><td>503 280 ₽ в год</td><td>меньшее из двух; сработало: доля рынка</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Год</th><th scope="col">Выручка по базовому прогнозу</th><th scope="col">Доля SAM</th></tr></thead>
+<tbody>
+<tr><td>1-й</td><td>292 611 ₽</td><td>1,74 %</td></tr>
+<tr><td>2-й</td><td>537 294 ₽</td><td>3,20 %</td></tr>
+<tr><td>3-й</td><td>606 400 ₽</td><td>3,61 %</td></tr>
+</tbody>
+</table></div>
+<p>Откуда числа. 70 324 салона по России — <a href="https://finance.mail.ru/article/sber-chislo-dejstvuyuschih-salonov-krasotyi-v-rf-v-i-kvartale-uvelichilos-na-186-69209651/" target="_blank" rel="noopener noreferrer">факт</a> (Сбер2B, I квартал 2026; методика в источнике не раскрыта). 18 000 ₽ в год — цена 1 500 ₽ × 12, [допущение] пользователя. 932 салона Казани — [оценка]: в городах-миллионниках без Москвы и Петербурга 13 051 салон (тот же источник), делю поровну на 14 городов; перечень городов — [допущение], Казань по размеру в середине списка. Данных по Казани отдельно не нашёл.</p>
+<p>Что это значит для цели. 100 000 ₽ в месяц при цене 1 500 ₽ — это 67 платящих салонов, около 7 % салонов Казани [оценка]. Чтобы SOM превысил 1 млн ₽ в год, нужно около 56 платящих, около 6 % [оценка]. Расширение географии не помогает: если взять все города-миллионники без Москвы и Петербурга (13 051 салон), SOM остаётся 606 400 ₽ в год — его ограничивает воронка, а не география.</p>
+<figure class="chart chart-market">
+<svg class="chart-svg chart-market" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 349" width="100%" role="img"><title>Рынок: TAM, SAM, SOM</title><desc>TAM — весь рынок: 1,3 млрд ₽ в год; SAM — доступный рынок: 17 млн ₽ в год; SOM — реально занять: 503 тыс. ₽ в год</desc><text x="14" y="20" class="ch-title">Рынок: TAM, SAM, SOM</text><circle class="mk-circle mk-0" cx="102" cy="122" r="88"/><circle class="mk-circle mk-1" cx="102" cy="195" r="15"/><circle class="mk-circle mk-2" cx="102" cy="203" r="7"/><path class="ch-leader" d="M102,34H200V36H208"/><circle class="mk-dot" cx="102" cy="34" r="2.5"/><text x="212" y="40" class="ch-l ch-b">TAM — весь рынок</text><text x="212" y="55" class="ch-v">1,3 млрд ₽ в год</text><path class="ch-leader" d="M102,180H200V182H208"/><circle class="mk-dot" cx="102" cy="180" r="2.5"/><text x="212" y="186" class="ch-l ch-b">SAM — доступный рынок</text><text x="212" y="201" class="ch-v">17 млн ₽ в год</text><text x="212" y="216" class="ch-2 ch-sm">1,33 % от TAM</text><path class="ch-leader" d="M102,196H200V237H208"/><circle class="mk-dot" cx="102" cy="196" r="2.5"/><text x="212" y="241" class="ch-l ch-b">SOM — реально занять</text><text x="212" y="256" class="ch-v">503 тыс. ₽ в год</text><text x="212" y="271" class="ch-2 ch-sm">3 % от SAM</text><text x="212" y="286" class="ch-2 ch-sm">доля 3 % SAM за 3 года</text><text x="14" y="319" class="ch-2 ch-sm">Малые круги увеличены, чтобы их было видно: по размеру</text><text x="14" y="333" class="ch-2 ch-sm">сравнивать нельзя.</text></svg>
+</figure>
+<p><strong>Сверка сверху вниз.</strong> Сверки нет: независимой оценки объёма рынка таких сервисов я не нашёл (внесено в раздел 13).</p>
+<p><strong>Рост и тренды.</strong> Салоны: число +18,6 %, оборот +5 %, покупок −7 %; Казань — самый быстрый рост оборота среди миллионников (+27,5 %) (<a href="https://finance.mail.ru/article/sber-chislo-dejstvuyuschih-salonov-krasotyi-v-rf-v-i-kvartale-uvelichilos-na-186-69209651/" target="_blank" rel="noopener noreferrer">факт</a>, 1 источник). Канал — Telegram под давлением, данные расходятся. Интерес к категории не измерялся. Вывод [оценка]: рынок клиентов растёт, интерес к решению и канал не подтверждены; рост — 5 из 10.</p>
+<h2 id="s-8">5. Оценка идеи</h2>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Критерий</th><th scope="col">Вес</th><th scope="col">Балл</th><th scope="col">Доказательство</th><th scope="col">Комментарий</th></tr></thead>
+<tbody>
+<tr><td>Боль реальная</td><td>25 %</td><td>5</td><td>допущение</td><td>Со слов сестры-администратора: 2–3 неявки в неделю в салоне на 6 мастеров; владелица: «было бы здорово, если недорого» — удобство, а не необходимость. Поступков нет; платящие аналоги и жалобы на них найдены, но это про оплату напоминаний вообще, а не про боль выбранного клиента.</td></tr>
+<tr><td>Объём рынка (SOM)</td><td>20 %</td><td>2</td><td>оценка</td><td>SOM около 0,5 млн ₽ в год по расчёту (3 % SAM Казани); воронка даёт близкую цифру.</td></tr>
+<tr><td>Рост рынка</td><td>10 %</td><td>5</td><td>оценка</td><td>Число салонов +18,6 % за год, оборот +5 %, покупок −7 % (Сбер2B); Казань +27,5 %. Аудитория Telegram −33 % с апреля по август (Mediascope). Интерес к категории не измерялся.</td></tr>
+<tr><td>Платёжеспособность</td><td>15 %</td><td>6</td><td>оценка</td><td>Бизнес платит за запись и рассылки: YCLIENTS 412–4 971 ₽, Бьюти Бот от 990 ₽; владелица просит «недорого»; цену 1 500 ₽ деньгами никто не проверял.</td></tr>
+<tr><td>Простота запуска</td><td>15 %</td><td>7</td><td>оценка</td><td>Бэкендер, пишет сам; 10 часов в неделю растягивают срок. Не решено, откуда бот берёт расписание; клиентов нужно приводить в бота.</td></tr>
+<tr><td>Преимущество</td><td>15 %</td><td>3</td><td>допущение</td><td>Напоминание — обычная функция аналогов; готовой рассылки окон постоянным клиентам не нашёл (у Saby — лист ожидания). Бот Telegram не пишет первым — минус против WhatsApp-аналога.</td></tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Итог:</strong> 4,6 из 10 · <strong>Вердикт:</strong> Отложить · <strong>Надёжность:</strong> низкая (30 %)</li>
+</ul>
+<p>Простыми словами. Итог ниже порога 6 — это «Отложить». Ограничитель «боль держится только на допущениях» сработал (поэтому боль в расчёте не выше 5), но на вердикт не влияет: итог и так ниже. Сильнее всего тянут вниз малый SOM (2) и слабое отличие (3).</p>
+<p><strong>Что поднимет балл</strong> (пересчёт на копии данных):</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Что должно стать правдой</th><th scope="col">Как проверить дёшево</th><th scope="col">Было → стало</th></tr></thead>
+<tbody>
+<tr><td>Боль подтверждена фактами (7), готовность платить — оплатой (8), отличие оценено по пилоту (5)</td><td>5 разговоров и платный пилот (раздел 14)</td><td>итог 4,6 → 5,7, надёжность низкая → высокая; вердикт остаётся «Отложить»</td></tr>
+<tr><td>Плюс SOM выше 1 млн ₽ в год (4) и отличие по результатам пилота (6)</td><td>пилот показывает чек и число окон; SOM растёт с ценой, воронкой или оплатой за результат</td><td>итог 5,7 → 6,2, вердикт «Сначала проверить»</td></tr>
+</tbody>
+</table></div>
+<p>Одних проверок мало. Спрос можно подтвердить, но идея останется «Отложить», пока не вырастут выручка и отличие. Поэтому разворот (раздел 13) меняет предложение и модель оплаты, а не только проверяет прежнее.</p>
+<h2 id="s-9">6. Портрет клиента</h2>
+<p><strong>Портрет — гипотеза: 2 из 5 данных о самом клиенте</strong> (сестра-администратор и владелица) плюс 8 отзывов о продукте конкурента (1 источник). Остальное — [допущение].</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Поле</th><th scope="col">Содержание</th><th scope="col">Метка · источник</th></tr></thead>
+<tbody>
+<tr><td>Кто это?</td><td>Владелица салона на 6 мастеров в Казани, решает про оплату сервисов; администратор — пользователь бота. Имя и тип салона не названы</td><td>[факт] со слов пользователя; роли — [оценка]</td></tr>
+<tr><td>Какая проблема?</td><td>Клиенты забывают о записи; 2–3 неявки в неделю; окна пустуют</td><td>[факт] со слов администратора, не проверено</td></tr>
+<tr><td>Как решает сейчас?</td><td>Администратор вручную пишет клиентам в WhatsApp. У других салонов — платные рассылки (8 авторов отзывов на Бьюти Бота)</td><td>[факт] со слов пользователя; <a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">факт</a></td></tr>
+<tr><td>Почему текущее плохое?</td><td>Вручную — время и сохраняющиеся неявки. У платных рассылок: «Моментальная блокировка всех номеров обеспечена», «Уведомления не отправляются»</td><td><a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">факт</a>, 1 источник</td></tr>
+<tr><td>Где обитает онлайн?</td><td>Не найдено: каталог каналов недоступен, чаты и группы владельцев салонов не найдены</td><td>пробел — [вставить найденные чаты и сообщества]</td></tr>
+<tr><td>Сколько готов платить?</td><td>Владелица: «недорого». Ориентиры: от 990 ₽ (Бьюти Бот), 943–3 314 ₽ (YCLIENTS на 3–10 пользователей)</td><td><a href="https://crmindex.ru/services/yclients2" target="_blank" rel="noopener noreferrer">факт</a></td></tr>
+<tr><td>Как принимает решение?</td><td>Неизвестно</td><td>[допущение]</td></tr>
+<tr><td>Что покупал похожее?</td><td>Неизвестно: программа записи в салоне сестры не названа</td><td>вопрос пользователю</td></tr>
+</tbody>
+</table></div>
+<p><strong>Альтернативы клиента</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Альтернатива</th><th scope="col">Тип</th><th scope="col">Что получает</th><th scope="col">Что не устраивает</th><th scope="col">Цена для клиента</th></tr></thead>
+<tbody>
+<tr><td>Ничего не делать</td><td>ничего не делать</td><td>нулевые усилия</td><td>теряет деньги на окнах и неявках</td><td>2–3 неявки в неделю [факт] со слов администратора</td></tr>
+<tr><td>Ручные сообщения в WhatsApp</td><td>костыль</td><td>работает без программ</td><td>время; неявки остаются; WhatsApp заблокирован</td><td>время администратора, не измерено</td></tr>
+<tr><td>Встроенные напоминания YCLIENTS и DIKIDI</td><td>косвенный заменитель</td><td>автонапоминания, PUSH, уведомления за 0 ₽</td><td>[вставить цитату клиента]</td><td>в подписке программы</td></tr>
+<tr><td>Платные рассылки (Бьюти Бот)</td><td>прямой конкурент</td><td>напоминания, возврат ушедших</td><td>«Моментальная блокировка всех номеров обеспечена»</td><td>от 990 ₽ в месяц</td></tr>
+<tr><td>Лист ожидания (Saby Clients)</td><td>прямой конкурент по окнам</td><td>освободившееся окно предлагается клиенту из очереди</td><td>[вставить цитату клиента]</td><td>[вставить цену]</td></tr>
+</tbody>
+</table></div>
+<p><strong>Силы перехода</strong></p>
+<ul>
+<li>Толкает: неявки и пустые окна; у платных рассылок — блокировки и недоставка.</li>
+<li>Тянет: «чтобы клиенты приходили», возврат давно не приходивших клиентов, окно заполнено без звонков.</li>
+<li>Привычка: ручные сообщения в WhatsApp; уже оплаченная программа записи.</li>
+<li>Страх: блокировки номеров, «продают воздух», невозврат денег, и у Telegram — что клиенты не смогут или не захотят зайти в бота.</li>
+</ul>
+<p><strong>Язык клиента</strong> (дословно, <a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">факт</a>): «Моментальная блокировка всех номеров обеспечена»; «аккаунты блокируют, сообщения регулярно не отправляются»; «Уведомления не отправляются»; «Чат бот не отправляет напоминания о записи уже второй день»; «ребята продают воздух»; «а деньги до сих пор списываются»; «ни одна функция не работает как надо». Слова владелицы: «было бы здорово, если недорого» (со слов пользователя).</p>
+<p><strong>Второй сегмент.</strong> Частные мастера и студии: неявка бьёт по их доходу напрямую, но цена 1 500 ₽ им не подходит (аналоги — 412 ₽ и бесплатно). Запасной вариант разворота.</p>
+<p><strong>План добора до 5 данных.</strong> Нужны ещё минимум 3 разговора с владельцами или администраторами других салонов (приложение А). Где искать: знакомые сестры; авторы отзывов о конкурентах; [вставить найденные чаты, ссылки] — чаты не найдены.</p>
+<h2 id="s-10">7. Позиционирование и оффер</h2>
+<p><strong>Три формулы</strong> (все — [допущение], не проверялись):</p>
+<ol>
+<li>Против ручных сообщений: «[Продукт] помогает администратору не писать клиентам вручную накануне записи — с помощью автоматического напоминания с кнопками «приду» и «перенести»».</li>
+<li>Против пропавшего окна: «[Продукт] помогает салону заполнять освободившиеся окна — предлагает их постоянным клиентам, которые согласились получать такие предложения, за минуты и без звонков администратора».</li>
+<li>Против платных рассылок в WhatsApp: «[Продукт] — рассылки для салона через официальный канал, а не через номера, которые блокируют».</li>
+</ol>
+<p><strong>Выбор — формула 2.</strong> Напоминания есть у всех аналогов, готовой рассылки свободных окон постоянным клиентам я не нашёл (у Saby — лист ожидания): различие единственное, его нужно доказать пилотом. Формула 3 держится на канале, а канал не определён.</p>
+<p><strong>Три оффера</strong> (срок не измерен — [N], измерить в пилоте):</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Вариант</th><th scope="col">Текст</th><th scope="col">Понятен за 5 сек.</th><th scope="col">Конкретный результат</th><th scope="col">Скорость, простота</th><th scope="col">Снимает страх</th><th scope="col">Отличается</th><th scope="col">Итог</th></tr></thead>
+<tbody>
+<tr><td>О1</td><td>Освободившееся окно снова занято за [N] минут — без звонков и ручных сообщений</td><td>✓</td><td>✓</td><td>✗ (срок не измерен)</td><td>✗</td><td>✓</td><td>3 из 5</td></tr>
+<tr><td>О2</td><td>Меньше пустых окон в календаре — без блокировок номеров и ручной рассылки</td><td>✓</td><td>✗ («меньше» без числа)</td><td>✗</td><td>✓ (блокировки)</td><td>✓</td><td>3 из 5</td></tr>
+<tr><td>О3</td><td>Платите только за заполненные окна: не заполнили — ничего не платите</td><td>✓</td><td>✓</td><td>✗</td><td>✓ (денежный риск)</td><td>✓</td><td>4 из 5</td></tr>
+</tbody>
+</table></div>
+<p>Лучший — О3: снимает главное возражение владелицы («если недорого») и привязывает цену к пользе. Но он зависит от экономики оплаты за результат, которой пока нет: гипотеза для проверки.</p>
+<p><strong>Как проверить заголовки.</strong> Покажи 3–5 заголовков (О1–О3 и перефразы) 5–10 владельцам или администраторам: один человек — один вариант. Спроси: «Что вы поняли из этого заголовка? Хотели бы попробовать?». Записывай в таблицу: вариант | показано | пересказали верно | спросили «как попробовать?» | цитаты. Побеждает вариант с наибольшим числом верных пересказов. «Нравится» — мнение, не спрос.</p>
+<h2 id="s-11">8. Экономика и прогноз выручки</h2>
+<p><strong>Модель и цена.</strong> Подписка, единица цены — салон. Цена 1 500 ₽ в месяц — [допущение] пользователя. Чем подкреплена:</p>
+<ul>
+<li>Аналоги: от 990 ₽ (Бьюти Бот), 943–3 314 ₽ (YCLIENTS на 3–10 пользователей) — цена внутри вилки, но YCLIENTS — программа записи целиком, а у тебя отдельный бот.</li>
+<li>Польза [оценка]. При 2–3 неявках в неделю и среднем чеке 1 831 ₽ (прокси: города-миллионники, <a href="https://finance.mail.ru/article/sber-chislo-dejstvuyuschih-salonov-krasotyi-v-rf-v-i-kvartale-uvelichilos-na-186-69209651/" target="_blank" rel="noopener noreferrer">факт</a>; чек салона сестры неизвестен) потери — 15 869–23 803 ₽ в месяц. Правило «цена — 10–20 % пользы»: если бот вернёт 30 % потерь, польза 4 761–7 141 ₽, а цена по правилу 476–1 428 ₽. Чтобы 1 500 ₽ были 20 % пользы, бот должен вернуть 32–47 % потерянных записей. Ручные напоминания сестры этого, судя по сохраняющимся неявкам, не дают. 1 500 ₽ — верхняя граница; в разговорах проверь 750–1 000 ₽ и оплату за результат.</li>
+</ul>
+<p><strong>Входные данные</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Параметр</th><th scope="col">Значение</th><th scope="col">Метка</th><th scope="col">Откуда</th></tr></thead>
+<tbody>
+<tr><td>Цена</td><td>1 500 ₽ в месяц</td><td>[допущение] пользователя</td><td>слова пользователя</td></tr>
+<tr><td>Переменные затраты</td><td>10 % цены</td><td>[допущение] агента</td><td>налог около 6 %, эквайринг около 3 %, сервер и сообщения около 1 %</td></tr>
+<tr><td>Отток</td><td>10 % в месяц</td><td>[допущение] агента</td><td>верхняя граница «нормально для старта»</td></tr>
+<tr><td>Контакты в месяц</td><td>640</td><td>[допущение] агента</td><td>240 личных сообщений (5 ч в неделю по ≈ 5 минут на сообщение) + 400 переходов с рекламы</td></tr>
+<tr><td>Цена перехода с рекламы</td><td>50 ₽</td><td>[допущение] агента, источника нет</td><td>проверить в кабинете VK Ads или Директа</td></tr>
+<tr><td>Контакт → пилот</td><td>5 %</td><td>[допущение] агента</td><td>между ориентиром для личных сообщений (около 10 %) и нормой лендинга (2–5 %)</td></tr>
+<tr><td>Пилот → оплата</td><td>11 %</td><td>[допущение] агента</td><td>около 1 % личных сообщений становятся платящими — в 4–6 раз ниже ориентира «2–3 пользователя на 50 сообщений», потому что продукт платный</td></tr>
+<tr><td>Бюджет на привлечение</td><td>20 000 ₽ в месяц</td><td>[факт] со слов пользователя</td><td>первые 3 месяца; в модели идёт весь горизонт</td></tr>
+<tr><td>Постоянные затраты</td><td>1 000 ₽ в месяц</td><td>[допущение] агента</td><td>сервер, домен</td></tr>
+<tr><td>Деньги на старте</td><td>60 000 ₽</td><td>[факт] со слов пользователя</td><td>если это те же деньги, что 3 × 20 000 ₽ на рекламу, запаса нет</td></tr>
+<tr><td>Цель</td><td>100 000 ₽ выручки в месяц через год</td><td>цель пользователя</td><td>толкую как выручку, не прибыль</td></tr>
+</tbody>
+</table></div>
+<h3 id="s-12">Юнит-экономика</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Показатель</th><th scope="col">Значение</th><th scope="col">Оценка</th></tr></thead>
+<tbody>
+<tr><td>Цена</td><td>1 500 ₽ в месяц</td><td></td></tr>
+<tr><td>Валовая маржа</td><td>90 %</td><td></td></tr>
+<tr><td>Маржа с клиента в месяц</td><td>1 350 ₽</td><td></td></tr>
+<tr><td>Срок жизни клиента</td><td>10,0 мес.</td><td></td></tr>
+<tr><td>LTV (от маржи)</td><td>13 500 ₽</td><td></td></tr>
+<tr><td>CAC</td><td>5 682 ₽</td><td></td></tr>
+<tr><td>LTV / CAC</td><td>2,38</td><td>Еле окупается. Улучшать конверсию и удержание</td></tr>
+<tr><td>Окупаемость CAC</td><td>4,2 мес.</td><td>Хорошо</td></tr>
+<tr><td>Отток в месяц</td><td>10 %</td><td>Нормально для старта</td></tr>
+<tr><td>Отток в год</td><td>72 %</td><td></td></tr>
+<tr><td>Новых платящих в первый месяц</td><td>3,5</td><td></td></tr>
+</tbody>
+</table></div>
+<p>Всё на допущениях. CAC посчитан по деньгам, без времени основателя. Если оценить 5 часов в неделю на привлечение по 1 000 ₽ в час [допущение агента — ставку поправь], CAC выходит 11 837 ₽, LTV/CAC 1,14, окупаемость 8,8 мес.</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Воронка в месяц</th><th scope="col">Число</th><th scope="col">Конверсия</th></tr></thead>
+<tbody>
+<tr><td>Посетители (контакты)</td><td>640</td><td></td></tr>
+<tr><td>Регистрации (пилоты)</td><td>32,0</td><td>5 %</td></tr>
+<tr><td>Платящие</td><td>3,5</td><td>11 %</td></tr>
+</tbody>
+</table></div>
+<p>Слабейшее и самое неопределённое звено — «пилот → оплата» (11 %): его никто не измерял, а держится на нём всё.</p>
+<figure class="chart chart-funnel">
+<svg class="chart-svg chart-funnel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 170" width="100%" role="img"><title>Воронка за первый месяц</title><desc>Визиты: 640; Регистрации: 32; Оплаты: 3,5</desc><text x="14" y="20" class="ch-title">Воронка за первый месяц</text><g><title>Визиты: 640</title><text x="14" y="47" class="ch-l">Визиты</text><rect class="ch-track" x="14" y="54" width="355.3" height="10" rx="4"/><path class="ch-bar ch-ord-1" d="M14,54h351.3a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-351.3z"/><text x="406" y="63" class="ch-v ch-num" text-anchor="end">640</text></g><g><title>Регистрации: 32</title><text x="14" y="87" class="ch-l">Регистрации</text><text x="406" y="87" class="ch-2 ch-sm" text-anchor="end">5 % от визитов</text><rect class="ch-track" x="14" y="94" width="355.3" height="10" rx="4"/><path class="ch-bar ch-ord-2" d="M14,94h13.8a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-13.8z"/><text x="406" y="103" class="ch-v ch-num" text-anchor="end">32</text></g><g><title>Оплаты: 3,5</title><text x="14" y="127" class="ch-l">Оплаты</text><text x="406" y="127" class="ch-2 ch-sm" text-anchor="end">11 % от регистраций</text><rect class="ch-track" x="14" y="134" width="355.3" height="10" rx="4"/><rect class="ch-bar ch-ord-3" x="14" y="134" width="3" height="10"/><text x="406" y="143" class="ch-v ch-num" text-anchor="end">3,5</text></g><text x="14" y="160" class="ch-2 ch-sm">Из визита в оплату: 0,55 %</text></svg>
+</figure>
+<h3 id="s-13">Прогноз выручки</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Показатель</th><th scope="col">Пессимистичный</th><th scope="col">Базовый</th><th scope="col">Оптимистичный</th></tr></thead>
+<tbody>
+<tr><td>Привлечение</td><td>×0,7</td><td>×1</td><td>×1,3</td></tr>
+<tr><td>Отток</td><td>×1,2</td><td>×1</td><td>×0,8</td></tr>
+<tr><td>Цена</td><td>×0,85</td><td>×1</td><td>×1,15</td></tr>
+<tr><td>MRR через 6 мес.</td><td>14 022 ₽</td><td>24 740 ₽</td><td>38 841 ₽</td></tr>
+<tr><td>MRR через 12 мес.</td><td>20 534 ₽</td><td>37 888 ₽</td><td>62 392 ₽</td></tr>
+<tr><td>MRR через 36 мес.</td><td>25 917 ₽</td><td>51 611 ₽</td><td>93 766 ₽</td></tr>
+<tr><td>Клиентов через 12 мес.</td><td>16,1</td><td>25,3</td><td>36,2</td></tr>
+<tr><td>Потолок числа клиентов</td><td>20,5</td><td>35,2</td><td>57,2</td></tr>
+<tr><td>LTV / CAC</td><td>1,18</td><td>2,38</td><td>4,44</td></tr>
+<tr><td>Выход в ноль, месяц</td><td>18</td><td>6</td><td>4</td></tr>
+<tr><td>Нужно денег до выхода в ноль</td><td>109 568 ₽</td><td>42 539 ₽</td><td>22 602 ₽</td></tr>
+<tr><td>Деньги кончатся, месяц</td><td>5</td><td>не кончатся</td><td>не кончатся</td></tr>
+<tr><td>Хватит денег до выхода в ноль</td><td>нет</td><td>да</td><td>да</td></tr>
+<tr><td>Цель достигнута, месяц</td><td>не достигается</td><td>не достигается</td><td>не достигается</td></tr>
+</tbody>
+</table></div>
+<figure class="chart chart-forecast">
+<svg class="chart-svg chart-forecast" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 318" width="100%" role="img"><title>MRR по месяцам</title><desc>MRR по месяцам: Оптимистичный — 94 тыс. ₽; Базовый — 52 тыс. ₽; Пессимистичный — 26 тыс. ₽; Цель — 100 000 ₽</desc><text x="14" y="20" class="ch-title">MRR по месяцам</text><text x="406" y="20" class="ch-2 ch-sm" text-anchor="end">значения на 36-м мес.</text><line class="ch-key sc-opt" x1="14" y1="36" x2="32" y2="36"/><text x="40" y="40" class="ch-l">Оптимистичный</text><text x="406" y="40" class="ch-v" text-anchor="end">94 тыс. ₽</text><line class="ch-key sc-base" x1="14" y1="54" x2="32" y2="54"/><text x="40" y="58" class="ch-l">Базовый</text><text x="406" y="58" class="ch-v" text-anchor="end">52 тыс. ₽</text><line class="ch-key sc-pess" x1="14" y1="72" x2="32" y2="72"/><text x="40" y="76" class="ch-l">Пессимистичный</text><text x="406" y="76" class="ch-v" text-anchor="end">26 тыс. ₽</text><line class="ch-key ch-goal-key" x1="14" y1="90" x2="32" y2="90"/><text x="40" y="94" class="ch-l">Цель</text><text x="406" y="94" class="ch-v" text-anchor="end">100 000 ₽</text><text x="14" y="112" class="ch-2 ch-sm">тыс. ₽</text><line class="ch-axis" x1="44" y1="292" x2="406" y2="292"/><text x="38" y="296" class="ch-2 ch-sm ch-num" text-anchor="end">0</text><line class="ch-grid" x1="44" y1="249.5" x2="406" y2="249.5"/><text x="38" y="253.5" class="ch-2 ch-sm ch-num" text-anchor="end">25</text><line class="ch-grid" x1="44" y1="207" x2="406" y2="207"/><text x="38" y="211" class="ch-2 ch-sm ch-num" text-anchor="end">50</text><line class="ch-grid" x1="44" y1="164.5" x2="406" y2="164.5"/><text x="38" y="168.5" class="ch-2 ch-sm ch-num" text-anchor="end">75</text><line class="ch-grid" x1="44" y1="122" x2="406" y2="122"/><text x="38" y="126" class="ch-2 ch-sm ch-num" text-anchor="end">100</text><line class="ch-goal-line" x1="44" y1="122" x2="406" y2="122"/><text x="406" y="117" class="ch-2 ch-sm ch-halo" text-anchor="end">Цель 100 000 ₽</text><text x="95.7" y="308" class="ch-2 ch-sm ch-num" text-anchor="middle">6</text><text x="157.8" y="308" class="ch-2 ch-sm ch-num" text-anchor="middle">12</text><text x="219.8" y="308" class="ch-2 ch-sm ch-num" text-anchor="middle">18</text><text x="281.9" y="308" class="ch-2 ch-sm ch-num" text-anchor="middle">24</text><text x="343.9" y="308" class="ch-2 ch-sm ch-num" text-anchor="middle">30</text><text x="406" y="308" class="ch-2 ch-sm ch-num" text-anchor="middle">36</text><text x="38" y="308" class="ch-2 ch-sm" text-anchor="end">мес.</text><path class="ch-line sc-pess" d="M44,286.7 L54.3,282 L64.7,277.8 L75,274.2 L85.4,271 L95.7,268.2 L106.1,265.7 L116.4,263.5 L126.7,261.6 L137.1,259.9 L147.4,258.4 L157.8,257.1 L168.1,255.9 L178.5,254.9 L188.8,254 L199.1,253.3 L209.5,252.6 L219.8,252 L230.2,251.4 L240.5,250.9 L250.9,250.5 L261.2,250.2 L271.5,249.8 L281.9,249.6 L292.2,249.3 L302.6,249.1 L312.9,248.9 L323.3,248.7 L333.6,248.6 L343.9,248.5 L354.3,248.3 L364.6,248.2 L375,248.1 L385.3,248.1 L395.7,248 L406,247.9"/><path class="ch-line ch-line-base sc-base" d="M44,283 L54.3,274.9 L64.7,267.7 L75,261.1 L85.4,255.2 L95.7,249.9 L106.1,245.2 L116.4,240.9 L126.7,237 L137.1,233.5 L147.4,230.4 L157.8,227.6 L168.1,225.1 L178.5,222.8 L188.8,220.7 L199.1,218.9 L209.5,217.2 L219.8,215.7 L230.2,214.4 L240.5,213.2 L250.9,212.1 L261.2,211.1 L271.5,210.2 L281.9,209.4 L292.2,208.7 L302.6,208 L312.9,207.5 L323.3,206.9 L333.6,206.5 L343.9,206 L354.3,205.7 L364.6,205.3 L375,205 L385.3,204.7 L395.7,204.5 L406,204.3"/><path class="ch-line sc-opt" d="M44,278.6 L54.3,266.2 L64.7,254.9 L75,244.4 L85.4,234.8 L95.7,226 L106.1,217.8 L116.4,210.3 L126.7,203.5 L137.1,197.1 L147.4,191.3 L157.8,185.9 L168.1,181 L178.5,176.5 L188.8,172.3 L199.1,168.4 L209.5,164.9 L219.8,161.7 L230.2,158.7 L240.5,155.9 L250.9,153.4 L261.2,151.1 L271.5,148.9 L281.9,146.9 L292.2,145.1 L302.6,143.5 L312.9,141.9 L323.3,140.5 L333.6,139.2 L343.9,138 L354.3,136.9 L364.6,135.9 L375,135 L385.3,134.1 L395.7,133.3 L406,132.6"/><circle class="ch-dot sc-opt" cx="406" cy="132.6" r="4"><title>Оптимистичный: 94 тыс. ₽</title></circle><circle class="ch-dot sc-base" cx="406" cy="204.3" r="4"><title>Базовый: 52 тыс. ₽</title></circle><circle class="ch-dot sc-pess" cx="406" cy="247.9" r="4"><title>Пессимистичный: 26 тыс. ₽</title></circle></svg>
+</figure>
+<p><strong>Деньги.</strong> В базовом сценарии минимум денег — 17 461 ₽ на 5-м месяце, выход в ноль на 6-м, из 60 000 ₽ нужно 42 539 ₽. В пессимистичном деньги кончаются на 5-м месяце, а до выхода в ноль (18-й месяц) нужно 109 568 ₽ — больше, чем есть. Это главный риск раздела. Модель держит 20 000 ₽ рекламы все 36 месяцев, у тебя бюджет на 3 месяца: после него приток упадёт до личных сообщений (отдельно не считал).</p>
+<figure class="chart chart-cash">
+<svg class="chart-svg chart-cash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" width="100%" role="img"><title>Деньги на счёте</title><desc>Деньги на счёте: Оптимистичный — не кончатся; Базовый — не кончатся; Пессимистичный — кончатся в мес. 5</desc><text x="14" y="20" class="ch-title">Деньги на счёте</text><line class="ch-key sc-opt" x1="14" y1="36" x2="32" y2="36"/><text x="40" y="40" class="ch-l">Оптимистичный</text><text x="406" y="40" class="ch-v" text-anchor="end">не кончатся</text><line class="ch-key sc-base" x1="14" y1="54" x2="32" y2="54"/><text x="40" y="58" class="ch-l">Базовый</text><text x="406" y="58" class="ch-v" text-anchor="end">не кончатся</text><line class="ch-key sc-pess" x1="14" y1="72" x2="32" y2="72"/><text x="40" y="76" class="ch-l">Пессимистичный</text><text x="406" y="76" class="ch-v" text-anchor="end">кончатся в мес. 5</text><text x="14" y="94" class="ch-2 ch-sm">млн ₽</text><line class="ch-axis" x1="44" y1="274" x2="406" y2="274"/><text x="38" y="278" class="ch-2 ch-sm ch-num" text-anchor="end">−0,5</text><line class="ch-zero" x1="44" y1="240" x2="406" y2="240"/><text x="38" y="244" class="ch-2 ch-sm ch-num" text-anchor="end">0,0</text><line class="ch-grid" x1="44" y1="206" x2="406" y2="206"/><text x="38" y="210" class="ch-2 ch-sm ch-num" text-anchor="end">0,5</text><line class="ch-grid" x1="44" y1="172" x2="406" y2="172"/><text x="38" y="176" class="ch-2 ch-sm ch-num" text-anchor="end">1,0</text><line class="ch-grid" x1="44" y1="138" x2="406" y2="138"/><text x="38" y="142" class="ch-2 ch-sm ch-num" text-anchor="end">1,5</text><line class="ch-grid" x1="44" y1="104" x2="406" y2="104"/><text x="38" y="108" class="ch-2 ch-sm ch-num" text-anchor="end">2,0</text><text x="95.7" y="290" class="ch-2 ch-sm ch-num" text-anchor="middle">6</text><text x="157.8" y="290" class="ch-2 ch-sm ch-num" text-anchor="middle">12</text><text x="219.8" y="290" class="ch-2 ch-sm ch-num" text-anchor="middle">18</text><text x="281.9" y="290" class="ch-2 ch-sm ch-num" text-anchor="middle">24</text><text x="343.9" y="290" class="ch-2 ch-sm ch-num" text-anchor="middle">30</text><text x="406" y="290" class="ch-2 ch-sm ch-num" text-anchor="middle">36</text><text x="38" y="290" class="ch-2 ch-sm" text-anchor="end">мес.</text><path class="ch-line sc-pess" d="M44,237.2 L54.3,238.2 L64.7,239.1 L75,239.9 L85.4,240.6 L95.7,241.2 L106.1,241.6 L116.4,242.1 L126.7,242.4 L137.1,242.7 L147.4,242.9 L157.8,243 L168.1,243.2 L178.5,243.3 L188.8,243.3 L199.1,243.4 L209.5,243.4 L219.8,243.4 L230.2,243.3 L240.5,243.3 L250.9,243.2 L261.2,243.1 L271.5,243 L281.9,242.9 L292.2,242.8 L302.6,242.7 L312.9,242.6 L323.3,242.5 L333.6,242.3 L343.9,242.2 L354.3,242 L364.6,241.9 L375,241.7 L385.3,241.6 L395.7,241.4 L406,241.3"/><path class="ch-line ch-line-base sc-base" d="M44,237 L54.3,237.8 L64.7,238.4 L75,238.7 L85.4,238.8 L95.7,238.7 L106.1,238.5 L116.4,238.1 L126.7,237.5 L137.1,236.8 L147.4,236 L157.8,235.1 L168.1,234.2 L178.5,233.1 L188.8,232 L199.1,230.8 L209.5,229.5 L219.8,228.2 L230.2,226.8 L240.5,225.4 L250.9,223.9 L261.2,222.5 L271.5,220.9 L281.9,219.4 L292.2,217.8 L302.6,216.2 L312.9,214.6 L323.3,213 L333.6,211.3 L343.9,209.7 L354.3,208 L364.6,206.3 L375,204.6 L385.3,202.9 L395.7,201.2 L406,199.4"/><path class="ch-line sc-opt" d="M44,236.9 L54.3,237.4 L64.7,237.5 L75,237.2 L85.4,236.5 L95.7,235.6 L106.1,234.4 L116.4,232.8 L126.7,231.1 L137.1,229.1 L147.4,226.9 L157.8,224.5 L168.1,221.9 L178.5,219.2 L188.8,216.3 L199.1,213.3 L209.5,210.2 L219.8,206.9 L230.2,203.5 L240.5,200 L250.9,196.5 L261.2,192.8 L271.5,189.1 L281.9,185.3 L292.2,181.5 L302.6,177.5 L312.9,173.6 L323.3,169.5 L333.6,165.5 L343.9,161.4 L354.3,157.2 L364.6,153 L375,148.8 L385.3,144.5 L395.7,140.2 L406,135.9"/><circle class="ch-dot sc-pess" cx="85.4" cy="240.6" r="4"><title>Пессимистичный: кончатся в мес. 5</title></circle></svg>
+</figure>
+<h3 id="s-14">Чувствительность</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Параметр</th><th scope="col">Диапазон (−20 % … +20 %)</th><th scope="col">LTV / CAC</th><th scope="col">Размах LTV / CAC</th><th scope="col">MRR на 12-м мес.</th></tr></thead>
+<tbody>
+<tr><td>Отток в месяц</td><td>8 % … 12 %</td><td>2,97 … 1,98</td><td>0,99</td><td>41 734 ₽ … 34 510 ₽</td></tr>
+<tr><td>Стоимость привлечения (бюджет при том же трафике)</td><td>16 000 ₽ … 24 000 ₽</td><td>2,97 … 1,98</td><td>0,99</td><td>37 888 ₽ … 37 888 ₽</td></tr>
+<tr><td>Цена</td><td>1 200 ₽ … 1 800 ₽</td><td>1,90 … 2,85</td><td>0,95</td><td>30 310 ₽ … 45 465 ₽</td></tr>
+<tr><td>Конверсия из регистрации в оплату</td><td>8,8 % … 13,2 %</td><td>1,90 … 2,85</td><td>0,95</td><td>30 310 ₽ … 45 465 ₽</td></tr>
+<tr><td>Трафик в месяц</td><td>512 … 768</td><td>1,90 … 2,85</td><td>0,95</td><td>30 310 ₽ … 45 465 ₽</td></tr>
+<tr><td>Доля переменных затрат</td><td>8 % … 12 %</td><td>2,43 … 2,32</td><td>0,11</td><td>37 888 ₽ … 37 888 ₽</td></tr>
+</tbody>
+</table></div>
+<p><strong>Первым менять — отток и стоимость привлечения</strong> (размах 0,99), затем цену, конверсию в оплату и трафик (0,95). До LTV/CAC = 3 каждый рычаг по отдельности: отток не выше 7,9 % или CAC не выше 4 500 ₽ (конверсия «пилот → оплата» 13,9 %) или цена не ниже 1 894 ₽ при прежней конверсии. Но потолок MRR при этом остаётся около 66 700 ₽. Отток 8 % вместе с конверсией 14 % дают LTV/CAC 3,78 и потолок 84 000 ₽: до цели всё равно не хватает.</p>
+<figure class="chart chart-sensitivity">
+<svg class="chart-svg chart-sensitivity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 372" width="100%" role="img"><title>Чувствительность LTV / CAC</title><desc>LTV/CAC сейчас 2,38. Отток в месяц: 2,97 … 1,98; Стоимость привлечения (бюджет при том же трафике): 2,97 … 1,98; Цена: 1,90 … 2,85; Конверсия из регистрации в оплату: 1,90 … 2,85; Трафик в месяц: 1,90 … 2,85; Доля переменных затрат: 2,43 … 2,32</desc><text x="14" y="20" class="ch-title">Чувствительность LTV / CAC: параметр ±20 %</text><rect class="ch-swatch ch-var-low" x="14" y="30" width="10" height="10" rx="2"/><text x="30" y="39" class="ch-2 ch-sm">−20 % к параметру</text><rect class="ch-swatch ch-var-high" x="184" y="30" width="10" height="10" rx="2"/><text x="200" y="39" class="ch-2 ch-sm">+20 % к параметру</text><line class="ch-ref" x1="50.1" y1="58" x2="50.1" y2="324"/><text x="50.1" y="55" class="ch-2 ch-sm" text-anchor="middle">1</text><line class="ch-ref" x1="353.4" y1="58" x2="353.4" y2="324"/><text x="353.4" y="55" class="ch-2 ch-sm" text-anchor="middle">3</text><path class="ch-var-low" d="M258.7,84h86.1a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-86.1z"/><path class="ch-var-high" d="M258.7,84h-56a4,4 0 0 0 -4,4v2a4,4 0 0 0 4,4h56z"/><path class="ch-var-low" d="M258.7,140h86.1a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-86.1z"/><path class="ch-var-high" d="M258.7,140h-56a4,4 0 0 0 -4,4v2a4,4 0 0 0 4,4h56z"/><path class="ch-var-low" d="M258.7,182h-68.1a4,4 0 0 0 -4,4v2a4,4 0 0 0 4,4h68.1z"/><path class="ch-var-high" d="M258.7,182h68.1a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-68.1z"/><path class="ch-var-low" d="M258.7,224h-68.1a4,4 0 0 0 -4,4v2a4,4 0 0 0 4,4h68.1z"/><path class="ch-var-high" d="M258.7,224h68.1a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-68.1z"/><path class="ch-var-low" d="M258.7,266h-68.1a4,4 0 0 0 -4,4v2a4,4 0 0 0 4,4h68.1z"/><path class="ch-var-high" d="M258.7,266h68.1a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-68.1z"/><path class="ch-var-low" d="M258.7,308h4a4,4 0 0 1 4,4v2a4,4 0 0 1 -4,4h-4z"/><path class="ch-var-high" d="M258.7,308h-4a4,4 0 0 0 -4,4v2a4,4 0 0 0 4,4h4z"/><line class="ch-base-line" x1="258.7" y1="58" x2="258.7" y2="324"/><text x="14" y="77" class="ch-l ch-halo">Отток в месяц</text><text x="406" y="77" class="ch-2 ch-sm ch-halo" text-anchor="end">8 % … 12 %</text><text x="353.8" y="93" class="ch-v ch-sm ch-num ch-halo" text-anchor="start">2,97</text><text x="193.7" y="93" class="ch-v ch-sm ch-num ch-halo" text-anchor="end">1,98</text><text x="14" y="119" class="ch-l ch-halo">Стоимость привлечения (бюджет при том же трафике)</text><text x="14" y="133" class="ch-2 ch-sm ch-halo">16 000 ₽ … 24 000 ₽</text><text x="353.8" y="149" class="ch-v ch-sm ch-num ch-halo" text-anchor="start">2,97</text><text x="193.7" y="149" class="ch-v ch-sm ch-num ch-halo" text-anchor="end">1,98</text><text x="14" y="175" class="ch-l ch-halo">Цена</text><text x="406" y="175" class="ch-2 ch-sm ch-halo" text-anchor="end">1 200 ₽ … 1 800 ₽</text><text x="181.7" y="191" class="ch-v ch-sm ch-num ch-halo" text-anchor="end">1,90</text><text x="335.8" y="191" class="ch-v ch-sm ch-num ch-halo" text-anchor="start">2,85</text><text x="14" y="217" class="ch-l ch-halo">Конверсия из регистрации в оплату</text><text x="406" y="217" class="ch-2 ch-sm ch-halo" text-anchor="end">8,8 % … 13,2 %</text><text x="181.7" y="233" class="ch-v ch-sm ch-num ch-halo" text-anchor="end">1,90</text><text x="335.8" y="233" class="ch-v ch-sm ch-num ch-halo" text-anchor="start">2,85</text><text x="14" y="259" class="ch-l ch-halo">Трафик в месяц</text><text x="406" y="259" class="ch-2 ch-sm ch-halo" text-anchor="end">512 … 768</text><text x="181.7" y="275" class="ch-v ch-sm ch-num ch-halo" text-anchor="end">1,90</text><text x="335.8" y="275" class="ch-v ch-sm ch-num ch-halo" text-anchor="start">2,85</text><text x="14" y="301" class="ch-l ch-halo">Доля переменных затрат</text><text x="406" y="301" class="ch-2 ch-sm ch-halo" text-anchor="end">8 % … 12 %</text><text x="271.8" y="317" class="ch-v ch-sm ch-num ch-halo" text-anchor="start">2,43</text><text x="245.7" y="317" class="ch-v ch-sm ch-num ch-halo" text-anchor="end">2,32</text><text x="258.7" y="337" class="ch-v ch-sm ch-num" text-anchor="middle">сейчас 2,38</text><text x="14" y="356" class="ch-2 ch-sm">Линии: 1 — граница убытка, 3 — здоровая экономика</text></svg>
+</figure>
+<h3 id="s-15">Расчёт от цели</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Показатель</th><th scope="col">Значение</th></tr></thead>
+<tbody>
+<tr><td>Цель, выручка в месяц</td><td>100 000 ₽</td></tr>
+<tr><td>Нужно клиентов</td><td>67</td></tr>
+<tr><td>Нужно новых платящих в месяц</td><td>6,7</td></tr>
+<tr><td>Нужно трафика в месяц</td><td>1 212</td></tr>
+<tr><td>Нужен бюджет на привлечение в месяц</td><td>37 879 ₽</td></tr>
+<tr><td>Потолок MRR при текущих притоке и оттоке</td><td>52 800 ₽</td></tr>
+<tr><td>Достигается в базовом сценарии, месяц</td><td>не достигается</td></tr>
+<tr><td>Достижима</td><td>нет</td></tr>
+</tbody>
+</table></div>
+<p>Чтобы выйти на 100 000 ₽ именно к 12-му месяцу, нужно около 9,3 новых платящих в месяц (сейчас 3,5), около 1 690 контактов (сейчас 640) и около 52 800 ₽ в месяц на привлечение (сейчас 20 000 ₽). Денег до выхода в ноль нужно около 104 065 ₽, а есть 60 000 ₽ — они кончатся на 2-м месяце. Вывод [оценка на допущениях]: «100 000 ₽ через год» при твоих ресурсах нереалистичны. Расчётный коридор на 12-м месяце — 20 534–62 392 ₽ в месяц, база 37 888 ₽.</p>
+<p><strong>Предупреждение:</strong> цель недостижима — потолок MRR 52 800 ₽ при текущих притоке и оттоке, а нужно 100 000 ₽.</p>
+<h2 id="s-16">9. Каналы</h2>
+<p><strong>Круги доверия.</strong> Круг 1 (знакомые из портрета): 2 человека — сестра и владелица её салона [оценка] со слов пользователя. Круг 2 (знакомые знакомых): сколько салонов сестра может представить — неизвестно; начинать с этого. Круг 3 (сообщества): найдено 0. Круг 4 (холодные контакты): публичные страницы около 932 салонов Казани [оценка/допущение].</p>
+<p><strong>Instagram исключён законом.</strong> Закон о запрете рекламы на платформах, признанных в России запрещёнными или нежелательными (Instagram и Facebook), подписан 7 апреля 2025 года и действует с 1 сентября 2025 (<a href="https://theins.ru/news/282337" target="_blank" rel="noopener noreferrer">факт</a>). Первый известный штраф — 30 000 ₽ юристке из Краснодара за рекламный ролик отеля (<a href="https://novayagazeta.eu/articles/2025/10/21/iuristka-iz-krasnodara-rasskazala-chto-ee-oshtrafovali-za-reklamu-v-instagram-eto-mozhet-byt-pervym-podobnym-delom-news" target="_blank" rel="noopener noreferrer">факт</a>); проверено по двум источникам. Твой единственный запланированный канал «реклама в Инстаграме» запрещён — не используй.</p>
+<p><strong>Матрица каналов</strong> (1–5, выше — лучше)</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Канал</th><th scope="col">Где ЦА</th><th scope="col">Стоимость</th><th scope="col">Скорость</th><th scope="col">Итого</th><th scope="col">Причина · метка</th></tr></thead>
+<tbody>
+<tr><td>Чаты и группы владельцев салонов (Telegram, ВКонтакте)</td><td>4</td><td>5</td><td>4</td><td>13</td><td>площадки не найдены, оценка условная до находки · [допущение]</td></tr>
+<tr><td>Знакомые сестры (круг 2)</td><td>4</td><td>5</td><td>3</td><td>12</td><td>число знакомств неизвестно · [допущение]</td></tr>
+<tr><td>Личные сообщения владельцам и администраторам</td><td>4</td><td>5</td><td>3</td><td>12</td><td>публичные контакты; по ориентиру около 10 ответов на 50 сообщений · [оценка]</td></tr>
+<tr><td>Яндекс Директ, VK Ads</td><td>3</td><td>2</td><td>5</td><td>10</td><td>до замера конверсии лендинга — только тест заголовков · [допущение]</td></tr>
+<tr><td>Хабр, vc.ru</td><td>1</td><td>5</td><td>2</td><td>8</td><td>салонов красоты там нет · [оценка]</td></tr>
+<tr><td>Instagram</td><td>3</td><td>1</td><td>1</td><td>5</td><td>реклама запрещена законом · [факт]</td></tr>
+</tbody>
+</table></div>
+<p>Стартуем с чатов (когда найдутся) и знакомых сестры; третий канал цикла — личные сообщения.</p>
+<p><strong>План проверки</strong> (критерии записаны до старта, менять нельзя)</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Канал</th><th scope="col">Бюджет</th><th scope="col">Срок</th><th scope="col">Критерий</th><th scope="col">Результат</th><th scope="col">Решение</th></tr></thead>
+<tbody>
+<tr><td>Знакомые сестры</td><td>0 ₽, 1 час</td><td>2 недели</td><td>не меньше 3 знакомств с владельцами или администраторами</td><td></td><td></td></tr>
+<tr><td>Личные сообщения</td><td>0 ₽, 5 часов в неделю (около 60 сообщений)</td><td>4 недели</td><td>по ориентиру около 10 ответов на 50 сообщений; не меньше 3 платных пилотов или предоплат на 240 сообщений [допущение]</td><td></td><td></td></tr>
+<tr><td>Чаты и группы</td><td>0 ₽, 2 часа в неделю</td><td>2 недели чтения, потом пост</td><td>10 и больше реакций за сутки на пост</td><td></td><td></td></tr>
+</tbody>
+</table></div>
+<p><strong>Найденные площадки.</strong> Не найдено. Что искал: каталог каналов TGStat по запросу о владельцах салонов — доступ закрыт. Запросы для следующего поиска: «владельцы салонов красоты чат Казань», «администраторы салонов красоты Telegram», «бьюти-бизнес Татарстан ВКонтакте». [вставить сообщество: название, ссылка, участников на дату, правила о рекламе].</p>
+<p><strong>Ёмкость.</strong> 240 личных сообщений в месяц по ориентиру дают около 48 ответов, 24 попытки и 9,6–14,4 пользователя; в расчёте экономики заложен 1 % сообщений в платящих — 2,4 в месяц [допущение]. 20 платящих в базовом сценарии будет к 8-му месяцу, 25 — к 12-му. До 100 клиентов этим темпом не дойти: потолок базового сценария — 35,2.</p>
+<p><strong>Платное.</strong> Не включать, пока конверсия лендинга ниже 3 %. Исключение — до 3 000–5 000 ₽ на проверку заголовков [допущение]. Реклама у блогеров и в каналах в России маркируется — проверить требования до закупки. Каналы с рекламой проверяй на накрутку (просмотры к подписчикам, цена за 1 000 показов).</p>
+<p><strong>Запуск на площадке.</strong> Площадки вроде Product Hunt для владельцев салонов не нужны. Пять пунктов готовности для любого публичного поста — сейчас все «нет»: лендинг (15 пунктов), понятный путь без помощи, сбор контактов, материалы, свободный день для ответов.</p>
+<h2 id="s-17">10. Лендинг</h2>
+<p>Лендинга нет. Цель страницы — контакт или платный пилот; кнопка — «Записаться в список пилота». Структура — 7 блоков (черновик в приложении В). До публикации собрать: макет уведомления клиенту (подпись «макет»), условия цены и возврата, счётчик Яндекс.Метрики с целью на кнопке. Настоящих отзывов нет — блок отзывов убрать. Целевые конверсии: лендинг → лист ожидания — нормально 10–20 %, хорошо 20–40 %; ниже 3 % платную рекламу не включать. Передано в экономику: контакт → пилот 5 % [допущение].</p>
+<h2 id="s-18">11. Метрики (план)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Этап</th><th scope="col">Метрика</th><th scope="col">Как считать</th><th scope="col">Где брать</th><th scope="col">Значение</th></tr></thead>
+<tbody>
+<tr><td>Привлечение</td><td>Контакты по каналам</td><td>сообщения, ответы, переходы</td><td>таблица, Метрика, метки в ссылках</td><td>после запуска</td></tr>
+<tr><td>Активация салона</td><td>Салон получил заполненное окно в первые 14 дней</td><td>получили / согласились на пилот</td><td>таблица</td><td>после запуска</td></tr>
+<tr><td>Активация клиентов салона</td><td>Доля постоянных клиентов, нажавших «Старт» за 3 дня</td><td>нажали / приглашённые</td><td>журнал бота</td><td>порог до старта: 30 % [допущение агента]</td></tr>
+<tr><td>Удержание</td><td>Салон активен через 30 дней</td><td>по когортам недель старта</td><td>таблица</td><td>после запуска</td></tr>
+<tr><td>Доход</td><td>MRR, конверсия пилот → оплата, ARPU</td><td>оплаты / пилоты</td><td>кабинет эквайринга, таблица</td><td>после запуска</td></tr>
+<tr><td>Рекомендации</td><td>«Как узнали о нас», K-фактор</td><td>ответ при подключении</td><td>форма</td><td>после запуска</td></tr>
+</tbody>
+</table></div>
+<p><strong>Aha-момент:</strong> салон получил заполненное окно через предложение постоянным клиентам в первые 14 дней [допущение]. Когорты — по неделе старта пилота. Первый инструмент — Яндекс.Метрика на лендинге плюс таблица. Дашборд: <code>startup-audit/salon-reminder-bot/dashboard.csv</code> (пустой, строки подписаны под продукт); заполнять по воскресеньям, 15 минут; первыми — контакты, согласия на пилот, «Старт» клиентов салонов.</p>
+<h2 id="s-19">12. Масштабирование и PMF (план)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Пункт чек-листа</th><th scope="col">Что должно стать правдой</th><th scope="col">Выполнен</th></tr></thead>
+<tbody>
+<tr><td>Удержание через 30 дней</td><td>больше 40 %</td><td>нет, данных нет</td></tr>
+<tr><td>LTV/CAC</td><td>больше 3</td><td>нет: 2,38 [допущение]</td></tr>
+<tr><td>Конверсия лендинга</td><td>больше 3 %</td><td>нет, лендинга нет</td></tr>
+<tr><td>Платящие клиенты</td><td>20–50</td><td>нет: 0</td></tr>
+<tr><td>K-фактор</td><td>больше 0</td><td>нет, данных нет</td></tr>
+<tr><td>Причина покупки одним предложением</td><td>известна</td><td>нет</td></tr>
+</tbody>
+</table></div>
+<p>Тест Шона Эллиса: вопрос «Как бы вы себя чувствовали, если бы больше не могли пользоваться ботом?». Задавать первым 30 салонам, дошедшим до Aha; меньше 30 ответов — только ориентир. Масштабироваться рано; направление выбирать после выполнения чек-листа.</p>
+<h2 id="s-20">13. Риски и допущения</h2>
+<p><strong>Три опасных допущения</strong> (критичность × неопределённость)</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Допущение</th><th scope="col">Крит. × неопр.</th><th scope="col">Дешёвая проверка (до 2 недель)</th><th scope="col">Порог успеха</th><th scope="col">Когда бросать</th></tr></thead>
+<tbody>
+<tr><td>Боль есть и салон платит</td><td>5 × 5</td><td>5 разговоров (приложение А) + 20 последних неявок салона сестры + предложение платного пилота</td><td>4 из 5 подтвердили боль без подсказки, 2 показали поведением; не меньше 3 оплат пилота или предоплат за 4 недели</td><td>все «интересно», ни одного действия за 4 недели — пауза, менять сегмент или проблему</td></tr>
+<tr><td>Клиенты салона придут в бота, Telegram доступен</td><td>5 × 4</td><td>сестра даёт ссылку на заглушку бота 20 клиентам; считаем «Старт» за 3 дня</td><td>не меньше 30 % [допущение агента, записать до старта]</td><td>меньше 15 % — менять канал</td></tr>
+<tr><td>Рассылка окон превращается в записи</td><td>4 × 4</td><td>ручной пилот на 1–2 салонах: окна предлагаешь вручную</td><td>не меньше 3 заполненных окон в неделю на салон [допущение агента]</td><td>меньше 1 окна в неделю за 4 недели — функция не работает</td></tr>
+</tbody>
+</table></div>
+<p><strong>Вопросы, ответы на которые сильнее всего изменят вывод.</strong> Кто заплатит первым и сколько; где клиенты салонов реально отвечают и открывается ли им Telegram без VPN; сколько неявок получили напоминание накануне; сколько окон в неделю остаётся пустыми и сколько стоит одно; какая программа записи стоит в салоне сестры и сколько салонов она может привести.</p>
+<p><strong>Почему это провалится — заранее</strong></p>
+<ol>
+<li>Нет потребности: сделал бота, а салонам хватает встроенных напоминаний и ручных сообщений.</li>
+<li>Кончились деньги: 60 000 ₽ — это три месяца рекламы; в пессимистичном сценарии деньги кончаются на 5-м месяце.</li>
+<li>Не тот состав: бэкендер на 10 часов в неделю без знакомых в нише, «как продавать — не думал».</li>
+<li>Проиграли конкурентам: у Saby уже есть лист ожидания; YCLIENTS может добавить рассылку окон.</li>
+</ol>
+<p><strong>Путь разворота</strong> (меняем две переменные и проверяем без кода)</p>
+<ol>
+<li>Что продаём: вместо «бота-напоминалки» — одна задача «заполнить освободившееся окно». Модель оплаты: подписка 1 500 ₽ или «платите за заполненное окно» — проверить в разговорах, какая снимает возражение «если недорого».</li>
+<li>Как проверяем: ручной режим на 1–2 салонах вместо бота. Канал определяется по факту — там, где клиенты отвечают сейчас (звонок, WhatsApp сестры, Telegram, MAX, ВКонтакте). Результат: сколько окон заполнилось и на какую сумму.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Слабый критерий</th><th scope="col">Что менять первым</th></tr></thead>
+<tbody>
+<tr><td>Боль (5, допущение)</td><td>разговоры с владельцами; сегмент, где боль острее</td></tr>
+<tr><td>SOM (2)</td><td>воронку и чек (оплата за результат), а не географию</td></tr>
+<tr><td>Отличие (3)</td><td>одну задачу — заполнение окон</td></tr>
+<tr><td>Платёжеспособность (6)</td><td>предоплата или платный пилот</td></tr>
+</tbody>
+</table></div>
+<p><strong>Сработавшие типовые ошибки.</strong> №1: нет разговоров с клиентами и «последнего случая» → 5 разговоров до первой строчки кода. №4: «для всех» («любые салоны») → один сегмент на старте. №5: описание — список функций → писать про результат. №6: нет лендинга → 7 блоков, приложение В. №7: нет плана поиска первых клиентов, «наверное, Инстаграм» → раздел 9. №2: риск «кодит месяцы» — при 10 часах в неделю MVP на 1–2 недели растянется на 4–8.</p>
+<p><strong>Размер рынка не проверен независимо:</strong> сверки сверху вниз нет.</p>
+<h2 id="s-21">14. План на 7 дней (около 10 часов)</h2>
+<ul>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 1 (45 мин).</strong> Написать сестре: по 20 последним неявкам — писали ли накануне, сумма записи; какая программа записи; сколько окон в неделю пустует; договориться о разговоре с владелицей. → 4 факта и дата разговора.</li>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 2 (1,5 ч).</strong> Прочитать приложение А, составить список 30 салонов Казани по публичным страницам, записать пороги из раздела 13 в карточку. → список и пороги до старта.</li>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 3 (2 ч).</strong> Разговор с владелицей 30 минут, запись по 7 пунктам; 15 личных сообщений (шаблон 4). → заметки и 15 отправленных.</li>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 4 (1,5 ч).</strong> Ещё 15 сообщений; назначить разговоры. → не меньше 3 назначенных.</li>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 5 (2 ч).</strong> 2–3 разговора по 30 минут с записью. → заметки 3–4 разговоров.</li>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 6 (1,5 ч).</strong> Повторные сообщения тем, кто не ответил (шаблон 5); бот-заглушка, который только фиксирует «Старт», и ссылка для 20 клиентов сестры. → счётчик «Старт» за 3 дня.</li>
+<li class="task"><span class="task-box" role="img" aria-label="не выполнено">☐</span> <strong>День 7 (1 ч).</strong> Разбор: таблица «разговор × 7 пунктов», сколько подтвердили боль и показали поведением. Решение: ручной платный пилот / менять сегмент / отложить. Вернуться с результатами. → решение по порогам.</li>
+</ul>
+<h2 id="s-22">Приложения</h2>
+<h3 id="s-23">А. Сценарий интервью</h3>
+<p><strong>Вступление:</strong> «Изучаю, как салоны напоминают клиентам о записи и что делают с пустыми окнами. Ничего не продаю, 20–30 минут».</p>
+<p>Вопросы:</p>
+<ol>
+<li>Как вы сейчас напоминаете клиентам о записи и что делаете, когда клиент не пришёл?</li>
+<li>Что вам больше всего не нравится в том, как это устроено?</li>
+<li>Пробовали ли что-то менять — программу, рассылки, предоплату? Что вышло?</li>
+<li>Сколько в неделю неявок и пустых окон, сколько это денег и времени администратора?</li>
+<li>Что случилось в последний раз, когда клиент не пришёл?</li>
+</ol>
+<p>Уточнения: «расскажите про последний раз», «что вы сделали потом?». Завершение: «Можно две недели попробовать вручную на вашем салоне? Если окна заполнятся — заплатите [сумма]?» или «Познакомите с коллегой?».</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Красный флаг</th><th scope="col">Что значит</th></tr></thead>
+<tbody>
+<tr><td>«Классная идея!»</td><td>вежливый отказ, нет конкретики</td></tr>
+<tr><td>«Да, было бы неплохо»</td><td>приятно иметь, не необходимо</td></tr>
+<tr><td>Рассказывает о будущем, а не о прошлом</td><td>мнение, не опыт</td></tr>
+</tbody>
+</table></div>
+<p>Где искать собеседников: знакомые сестры; авторы отзывов о конкурентах на <a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">странице Бьюти Бота</a>; [вставить найденные чаты]. Запись: кто, дата, цитаты, 7 пунктов. Приглашение: «Здравствуйте, [имя]! [Имя сестры или знакомого] дала(а) ваш контакт. Я изучаю, как салоны решают вопрос неявок и пустых окон. Ничего не продаю. Можно [дата, время] на 20–30 минут?»</p>
+<h3 id="s-24">Б. Шаблоны сообщений</h3>
+<ol>
+<li>Знакомому (круг 1): «Здравствуйте, [имя]! Я делаю помощника для салонов: он предлагает освободившиеся окна постоянным клиентам. У вас бывают неявки и пустые окна. Можно 20 минут? Продавать ничего не буду — хочу понять, как у вас сейчас, и показать, что получилось».</li>
+<li>Просьба познакомить: «[Имя], привет! Нет ли знакомых владельцев или администраторов салонов в Казани? Ищу салоны, которые две недели попробуют помощника для освободившихся окон и скажут, что не так. Познакомь или перешли этот текст».</li>
+<li>Пост в сообщество: «Клиент не пришёл, окно пустует — что вы делаете? [2–4 предложения о ситуации — только настоящее.] Я делаю помощника для освободившихся окон. Расскажете в комментариях, как у вас? Кому интересно попробовать — напишу в личные».</li>
+<li>Незнакомому владельцу: «Здравствуйте, [имя]! [Ссылка на публичную страницу салона]. Я делаю помощника, который предлагает освободившиеся окна постоянным клиентам. Хочу вручную попробовать на вашем салоне без подключения и оплаты и услышать, что не так. Интересно?»</li>
+<li>Повтор через 3 дня: «[Имя], вернусь к сообщению: [одна строка нового]. Если неактуально — без обид, больше не побеспокою».</li>
+</ol>
+<p>Правила: персонализируй по публичной странице; не продавай — проси отзыв; 3–4 предложения; один повтор через 3 дня; личные данные не собирай; массовые холодные рассылки не делай, пиши по одному.</p>
+<h3 id="s-25">В. Черновик лендинга</h3>
+<ol>
+<li>Заголовок: «Освободившееся окно снова занято — без звонков и ручных сообщений» [проверить на людях].</li>
+<li>Подзаголовок: «Помощник для салонов: предлагает освободившиеся окна постоянным клиентам, которые согласились получать такие предложения».</li>
+<li>Визуал: [вставить макет уведомления клиенту — подпись «макет»].</li>
+<li>Доказательство: [вставить отзыв: имя, роль, ссылка — с согласия]; настоящих нет — блок убрать.</li>
+<li>Преимущества (после проверки пилотом): окно не пропадает; не нужно писать каждому вручную; клиент сам согласился на предложения.</li>
+<li>Кнопка: «Записаться в список пилота».</li>
+<li>FAQ: «А если не понравится?» — [условия возврата]; «Как клиенты узнают о предложениях?» — [канал]; «Что с данными клиентов?» — [условия]; «Сколько стоит?» — [цена].</li>
+</ol>
+<p>Заглушки: условия возврата — спросить у себя до публикации; канал — по результатам разговоров; отзывы — после пилота.</p>
+<h3 id="s-26">Г. Контент-план на 2 недели</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">День</th><th scope="col">Что делаем</th><th scope="col">Где</th></tr></thead>
+<tbody>
+<tr><td>1–2</td><td>список 30 салонов; вопрос в найденных чатах «Неявки и пустые окна — что вы делаете?» (после правил)</td><td>личные сообщения, чаты</td></tr>
+<tr><td>3</td><td>разговор с владелицей салона сестры</td><td>лично</td></tr>
+<tr><td>4–5</td><td>по 12 личных сообщений в день</td><td>Telegram, ВКонтакте</td></tr>
+<tr><td>6–7</td><td>разбор ответов, правка сообщений</td><td>заметки</td></tr>
+<tr><td>8</td><td>пост с настоящими выводами и числами из разговоров</td><td>чаты, ВКонтакте</td></tr>
+<tr><td>9–10</td><td>ещё по 12 сообщений в день, повторы</td><td>Telegram, ВКонтакте</td></tr>
+<tr><td>11–12</td><td>макет уведомления на 1–2 минуты</td><td>ВКонтакте, Telegram</td></tr>
+<tr><td>13–14</td><td>итоги: числа, выводы, решение</td><td>заметки, сестре</td></tr>
+</tbody>
+</table></div>
+<p>В каждой ссылке — метка источника (UTM).</p>
+<h3 id="s-27">Д. Источники</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">№</th><th scope="col">Что взято</th><th scope="col">Ссылка</th><th scope="col">Дата</th><th scope="col">Метка</th><th scope="col">Проверено</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Бот не может начать разговор с пользователем</td><td><a href="https://core.telegram.org/bots" target="_blank" rel="noopener noreferrer">https://core.telegram.org/bots</a></td><td>30.10.2026</td><td>факт</td><td>1 (первичный)</td></tr>
+<tr><td>2</td><td>Лимиты рассылки Telegram около 30 сообщений в секунду</td><td><a href="https://core.telegram.org/bots/faq" target="_blank" rel="noopener noreferrer">https://core.telegram.org/bots/faq</a></td><td>30.10.2026</td><td>факт</td><td>1 (первичный)</td></tr>
+<tr><td>3</td><td>РКН 10.02.2026 замедляет Telegram; заявление Дурова про 65 млн через VPN</td><td><a href="https://ru.wikipedia.org/wiki/Блокировка_Telegram_в_России_(2026)" target="_blank" rel="noopener noreferrer">https://ru.wikipedia.org/wiki/Блокировка_Telegram_в_России_(2026)</a></td><td>30.10.2026</td><td>факт (вторичный)</td><td>да (2: 3 и 4)</td></tr>
+<tr><td>4</td><td>Mediascope авг. 2026: Telegram 33,8 млн в день (−33 % к апрелю); Digital Budget: Telegram 91 → 114 млн в месяц</td><td><a href="https://www.mentoday.ru/life/news/20-10-2026/byudjetnye-milliardy-v-pesok-zablokirovannye-whatsapp-i-telegram-snova-nachali-rasti-v-rossii/" target="_blank" rel="noopener noreferrer">https://www.mentoday.ru/life/news/20-10-2026/byudjetnye-milliardy-v-pesok-zablokirovannye-whatsapp-i-telegram-snova-nachali-rasti-v-rossii/</a></td><td>30.10.2026</td><td>факт (пересказ)</td><td>да (2: 3 и 4)</td></tr>
+<tr><td>5</td><td>WhatsApp: полная блокировка, домен убран из национальной системы доменных имён</td><td><a href="https://ru.themoscowtimes.com/2026/02/12/whatsapp-poobeschal-prinyat-meri-dlya-sohraneniya-dostupa-kmessendzheru-vrossii-posle-blokirovki-a187041" target="_blank" rel="noopener noreferrer">https://ru.themoscowtimes.com/2026/02/12/whatsapp-poobeschal-prinyat-meri-dlya-sohraneniya-dostupa-kmessendzheru-vrossii-posle-blokirovki-a187041</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>6</td><td>YCLIENTS: уведомления за 0 ₽</td><td><a href="https://www.yclients.ru/price" target="_blank" rel="noopener noreferrer">https://www.yclients.ru/price</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>7</td><td>YCLIENTS: автонапоминания и массовые рассылки; пробный период 7 дней</td><td><a href="https://www.yclients.ru/info/pricing" target="_blank" rel="noopener noreferrer">https://www.yclients.ru/info/pricing</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>8</td><td>DIKIDI: бесплатный тариф, PUSH; рублёвых цен нет; статья 2023 года</td><td><a href="https://support.dikidi.net/ru/knowledge-bases/4/articles/930-novaya-linejka-tarifov-v-dikidi" target="_blank" rel="noopener noreferrer">https://support.dikidi.net/ru/knowledge-bases/4/articles/930-novaya-linejka-tarifov-v-dikidi</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>9</td><td>Saby Clients: автоматический лист ожидания</td><td><a href="https://saby.ru/news/salons/06c3ebf8-5649-441f-9cb6-56e92b0c0a22" target="_blank" rel="noopener noreferrer">https://saby.ru/news/salons/06c3ebf8-5649-441f-9cb6-56e92b0c0a22</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>10</td><td>Сбер2B (ТАСС 21.05.2026): 70 324 салона, чеки 2 115 ₽ и 1 831 ₽, 13 051 салон в миллионниках</td><td><a href="https://finance.mail.ru/article/sber-chislo-dejstvuyuschih-salonov-krasotyi-v-rf-v-i-kvartale-uvelichilos-na-186-69209651/" target="_blank" rel="noopener noreferrer">https://finance.mail.ru/article/sber-chislo-dejstvuyuschih-salonov-krasotyi-v-rf-v-i-kvartale-uvelichilos-na-186-69209651/</a></td><td>30.10.2026</td><td>факт (пересказ)</td><td>1</td></tr>
+<tr><td>11</td><td>YCLIENTS: 412, 943, 3 314, 4 971 ₽ в месяц</td><td><a href="https://crmindex.ru/services/yclients2" target="_blank" rel="noopener noreferrer">https://crmindex.ru/services/yclients2</a></td><td>30.10.2026</td><td>факт (сторонний, без даты цен)</td><td>1</td></tr>
+<tr><td>12</td><td>Бьюти Бот: от 990 ₽; 8 отзывов, все отрицательные</td><td><a href="https://crmindex.ru/services/byuti_bot" target="_blank" rel="noopener noreferrer">https://crmindex.ru/services/byuti_bot</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>13</td><td>Закон «О рекламе» № 38-ФЗ, статья 18 (название)</td><td><a href="https://www.consultant.ru/document/cons_doc_LAW_58968/" target="_blank" rel="noopener noreferrer">https://www.consultant.ru/document/cons_doc_LAW_58968/</a></td><td>30.10.2026</td><td>факт</td><td>1</td></tr>
+<tr><td>14</td><td>Запрет рекламы в Instagram: подписан 7 апреля, с 1 сентября 2025</td><td><a href="https://theins.ru/news/282337" target="_blank" rel="noopener noreferrer">https://theins.ru/news/282337</a></td><td>30.10.2026</td><td>факт</td><td>да (2: 14 и 15)</td></tr>
+<tr><td>15</td><td>Первый штраф 30 000 ₽ за рекламу отеля в Instagram</td><td><a href="https://novayagazeta.eu/articles/2025/10/21/iuristka-iz-krasnodara-rasskazala-chto-ee-oshtrafovali-za-reklamu-v-instagram-eto-mozhet-byt-pervym-podobnym-delom-news" target="_blank" rel="noopener noreferrer">https://novayagazeta.eu/articles/2025/10/21/iuristka-iz-krasnodara-rasskazala-chto-ee-oshtrafovali-za-reklamu-v-instagram-eto-mozhet-byt-pervym-podobnym-delom-news</a></td><td>30.10.2026</td><td>факт</td><td>да (2: 14 и 15)</td></tr>
+</tbody>
+</table></div>
+<p>Пересчёт валют: не требовался. <strong>Не найдено:</strong> запросы Яндекса и тренд; чаты и каналы владельцев салонов; число салонов Казани отдельно; рублёвые цены DIKIDI и официальные цены YCLIENTS; закрытые аналоги. <strong>Не удалось открыть:</strong> tadviser.ru, secrets.tbank.ru, allo.tochka.com (ошибки доступа), tgstat.ru и censor.net (403).</p>
+<h3 id="s-28">Е. Допущения</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Допущение</th><th scope="col">Чьё</th><th scope="col">На что влияет</th></tr></thead>
+<tbody>
+<tr><td>Цена 1 500 ₽ в месяц</td><td>пользователя</td><td>LTV, SAM, SOM, цель</td></tr>
+<tr><td>2–3 неявки в неделю типичны для «любых салонов»</td><td>пользователя</td><td>боль, польза</td></tr>
+<tr><td>Переменные затраты 10 %</td><td>агента</td><td>маржа, LTV</td></tr>
+<tr><td>Отток 10 % в месяц</td><td>агента</td><td>LTV, потолок клиентов</td></tr>
+<tr><td>640 контактов: 240 сообщений + 400 переходов по 50 ₽</td><td>агента</td><td>приток, CAC</td></tr>
+<tr><td>Контакт → пилот 5 %, пилот → оплата 11 %</td><td>агента</td><td>число платящих, CAC</td></tr>
+<tr><td>Постоянные затраты 1 000 ₽ в месяц</td><td>агента</td><td>деньги</td></tr>
+<tr><td>60 000 ₽ — весь капитал, включая рекламу</td><td>агента (толкование)</td><td>запас денег</td></tr>
+<tr><td>Реклама 20 000 ₽ идёт весь горизонт</td><td>агента (упрощение модели)</td><td>приток, деньги</td></tr>
+<tr><td>Цель 100 000 ₽ — выручка, не прибыль</td><td>агента (толкование)</td><td>вывод о достижимости</td></tr>
+<tr><td>Салонов в Казани 932 (13 051 ÷ 14)</td><td>агента</td><td>SAM, SOM</td></tr>
+<tr><td>Баллы сегментов</td><td>агента</td><td>выбор стартового сегмента</td></tr>
+<tr><td>Средний чек 1 831 ₽ (прокси)</td><td>агента</td><td>польза, цена</td></tr>
+<tr><td>Ставка времени основателя 1 000 ₽/ч</td><td>агента</td><td>CAC с учётом времени</td></tr>
+<tr><td>Пороги проверок («Старт» 30 %, 3 окна в неделю)</td><td>агента</td><td>решения по тестам</td></tr>
+<tr><td>Рассылка окон — реклама, нужно согласие</td><td>агента (знание без источника)</td><td>дизайн бота, риск штрафа</td></tr>
+</tbody>
+</table></div>
+<h3 id="s-29">Ж. Глоссарий</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Термин</th><th scope="col">Простыми словами</th></tr></thead>
+<tbody>
+<tr><td>ЦА</td><td>целевая аудитория — те, кому продукт нужен</td></tr>
+<tr><td>TAM, SAM, SOM</td><td>весь рынок; часть, которую можно обслужить; часть, которую реально занять за 1–3 года</td></tr>
+<tr><td>MRR</td><td>выручка от подписок за месяц</td></tr>
+<tr><td>LTV</td><td>валовая прибыль с клиента за всё время</td></tr>
+<tr><td>CAC</td><td>сколько стоит привлечь одного платящего клиента</td></tr>
+<tr><td>LTV/CAC</td><td>во сколько раз клиент приносит больше, чем стоит его привлечь</td></tr>
+<tr><td>Отток</td><td>доля клиентов, ушедших за месяц</td></tr>
+<tr><td>Aha-момент</td><td>первое действие, после которого клиент понял ценность</td></tr>
+<tr><td>Лестница доказательств</td><td>мнение → намерение → контакт → предоплата → регулярное использование</td></tr>
+<tr><td>Smoke-тест</td><td>проверка спроса до продукта</td></tr>
+<tr><td>Когорта</td><td>клиенты, пришедшие в один период</td></tr>
+<tr><td>PMF</td><td>продукт нашёл свой рынок</td></tr>
+<tr><td>VPN</td><td>программа для обхода блокировок</td></tr>
+<tr><td>UTM</td><td>метка источника в ссылке</td></tr>
+</tbody>
+</table></div>
+</div>
+</body>
+</html>
