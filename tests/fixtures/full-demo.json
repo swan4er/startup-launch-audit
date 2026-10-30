@@ -1,0 +1,42 @@
+{
+  "project": {"name": "Telegram-бот аватарок", "currency": "RUB", "stage": "revenue"},
+  "scorecard": {
+    "pain": {"score": 7, "evidence": "estimate", "note": "60 человек платят подписку, но причины ухода неизвестны"},
+    "som": {"score": 4, "evidence": "estimate", "note": "доступная часть рынка небольшая"},
+    "growth": {"score": 6, "evidence": "estimate", "note": "интерес к ИИ-картинкам растёт"},
+    "ability_to_pay": {"score": 6, "evidence": "fact", "note": "конкуренты берут 199–499 ₽ в месяц"},
+    "build_ease": {"score": 9, "evidence": "fact", "note": "бот собран за две недели"},
+    "advantage": {"score": 8, "evidence": "assumption", "note": "свои стили, но клиенты это не подтвердили"},
+    "someone_pays": true
+  },
+  "segments": [
+    {"name": "Блогеры и авторы каналов", "size": 120000, "size_unit": "аккаунтов", "pain": 7, "wtp": 7, "ease": 8},
+    {"name": "Малый бизнес в соцсетях: салоны красоты, студии, кофейни и магазины одежды", "size": 60000, "size_unit": "компаний", "pain": 6, "wtp": 8, "ease": 5},
+    {"name": "Геймеры и стримеры", "size": 200000, "size_unit": "аккаунтов", "pain": 5, "wtp": 4, "ease": 7},
+    {"name": "Школьники и студенты", "size": 3000000, "size_unit": "человек", "pain": 4, "wtp": 2, "ease": 9}
+  ],
+  "market": {
+    "unit": "пользователей",
+    "tam_count": 15000000,
+    "sam_count": 400000,
+    "price_year": 4680,
+    "som_share_year3": 0.03,
+    "top_down": {"tam": 55000000000, "sam": 2500000000, "source": "оценка по числу пользователей мессенджера в России"}
+  },
+  "economics": {
+    "model": "subscription",
+    "price": 390,
+    "variable_cost_pct": 0.45,
+    "churn_month": 0.25,
+    "traffic_month": 1500,
+    "traffic_growth_month": 0,
+    "cr_visit_signup": 1,
+    "cr_signup_paid": 0.02,
+    "marketing_month": 30000,
+    "fixed_costs_month": 2000,
+    "cash_now": 50000,
+    "start_customers": 60,
+    "goal_mrr": 300000,
+    "horizon_months": 36
+  }
+}
