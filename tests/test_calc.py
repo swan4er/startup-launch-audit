@@ -56,7 +56,11 @@ class FormattingTests(unittest.TestCase):
         self.assertEqual(calc.fmt_money(20554.3, "EUR"), "20" + NBSP + "554" + NBSP + "€")
         self.assertEqual(calc.fmt_money(-1500), "−1" + NBSP + "500" + NBSP + "₽")
         self.assertEqual(calc.fmt_money(-1500, "USD"), "−$1" + NBSP + "500")
-        self.assertEqual(calc.fmt_money(-0.4), "0" + NBSP + "₽")
+        self.assertEqual(calc.fmt_money(-0.4), "−0,40" + NBSP + "₽")
+        self.assertEqual(calc.fmt_money(7.5, "USD"), "$7,50")
+        self.assertEqual(calc.fmt_money(7, "USD"), "$7")
+        self.assertEqual(calc.fmt_money(99.994), "99,99" + NBSP + "₽")
+        self.assertEqual(calc.fmt_money(150.4), "150" + NBSP + "₽")
 
     def test_num_and_pct_rounding(self):
         self.assertEqual(calc.fmt_num(20.76, 0), "21")
@@ -312,6 +316,26 @@ class UnitEconomicsTests(unittest.TestCase):
         self.assertTrue(u["warnings"])
         self.assertAlmostEqual(u["ltv"], 594 * 60)
         self.assertEqual(u["annual_churn"], 0)
+
+    def test_founder_time_counts_in_cac_but_not_in_cash(self):
+        e = {**BASE, "marketing_month": 0, "founder_time_cost_month": 10000}
+        u = calc.unit_economics(e)
+        self.assertIsNone(u["cac"])
+        self.assertAlmostEqual(u["cac_with_time"], 2000)
+        self.assertAlmostEqual(u["ltv_cac_with_time"], 1.98, places=2)
+        self.assertFalse(any("оцените время" in w for w in u["warnings"]))
+        self.assertEqual(calc.forecast(e)["months"][0]["costs"], calc.forecast({**BASE, "marketing_month": 0})["months"][0]["costs"])
+
+    def test_founder_time_adds_to_money_cac(self):
+        u = calc.unit_economics({**BASE, "founder_time_cost_month": 5000})
+        self.assertEqual(u["cac"], 2000)
+        self.assertAlmostEqual(u["cac_with_time"], 3000)
+
+    def test_goal_reports_acquisition_with_time(self):
+        e = {**BASE, "marketing_month": 0, "founder_time_cost_month": 10000, "goal_mrr": 100000}
+        g = calc.goal(e, calc.forecast(e))
+        self.assertIsNone(g["marketing_needed"])
+        self.assertAlmostEqual(g["acquisition_with_time_needed"], 15.15 * 2000, delta=20)
 
     def test_free_acquisition_no_cac(self):
         u = calc.unit_economics({**BASE, "marketing_month": 0})

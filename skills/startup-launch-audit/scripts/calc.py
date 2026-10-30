@@ -138,11 +138,12 @@ def fmt_pct(x: float, digits: int = 0) -> str:
 
 
 def fmt_money(x: float, currency: str = "RUB") -> str:
-    """Деньги, округление до целого: «20 554 ₽», «$20 554», «20 554 €»."""
+    """Деньги: «20 554 ₽», «$20 554», «20 554 €»; суммы меньше 100 с дробной частью — «$7,50»."""
     d = _decimal(x)
     if d is None:
         return DASH
-    text = _render_decimal(d, 0)
+    digits = 2 if abs(d) < 100 and d != d.to_integral_value() else 0
+    text = _render_decimal(d, digits)
     sign, body = (MINUS, text[1:]) if text.startswith(MINUS) else ("", text)
     if currency == "USD":
         return sign + "$" + body
@@ -377,6 +378,7 @@ def _norm_econ(e: dict) -> dict:
         "cr_signup_paid": _number(e, "cr_signup_paid", p, required=True, lo=0, hi=1),
         "marketing_month": _number(e, "marketing_month", p, required=True, lo=0),
         "cac": _number(e, "cac", p, lo=0),
+        "founder_time_cost_month": _number(e, "founder_time_cost_month", p, default=0, lo=0),
         "fixed_costs_month": _number(e, "fixed_costs_month", p, default=0, lo=0),
         "cash_now": _number(e, "cash_now", p, lo=0),
         "start_customers": _number(e, "start_customers", p, default=0, lo=0),
@@ -419,14 +421,22 @@ def unit_economics(e: dict, factors: dict | None = None) -> dict:
     if explicit is not None and explicit > 0:
         cac = explicit / k["acq"]
     elif explicit == 0 or (explicit is None and e["marketing_month"] == 0):
-        reason = "CAC задан нулём" if explicit == 0 else "Бюджет на привлечение равен нулю"
-        warnings.append(f"{reason}: привлечение бесплатное — CAC по деньгам 0, оцените своё время.")
+        if e["founder_time_cost_month"] == 0:
+            reason = "CAC задан нулём" if explicit == 0 else "Бюджет на привлечение равен нулю"
+            warnings.append(f"{reason}: привлечение бесплатное — CAC по деньгам 0; "
+                            "оцените время основателя на привлечение (founder_time_cost_month).")
     elif new_paid > 0:
         cac = e["marketing_month"] / new_paid
     if margin <= 0:
         warnings.append("Переменные затраты равны цене: валовая маржа нулевая, привлечение не окупится.")
 
     ltv_cac = ltv / cac if cac is not None else None
+    cac_with_time = ltv_cac_with_time = payback_with_time = None
+    if e["founder_time_cost_month"] > 0 and new_paid > 0:
+        cac_with_time = (cac or 0) + e["founder_time_cost_month"] / new_paid
+        ltv_cac_with_time = ltv / cac_with_time
+        if margin > 0:
+            payback_with_time = cac_with_time / margin
     payback_months = payback_purchases = payback_status = None
     if cac is not None and margin > 0:
         if subscription:
@@ -460,6 +470,12 @@ def unit_economics(e: dict, factors: dict | None = None) -> dict:
         "payback_months": payback_months,
         "payback_purchases": payback_purchases,
         "ltv_cac_status": _band(ltv_cac, LTV_CAC_BANDS, LTV_CAC_TOP) if ltv_cac is not None else None,
+        "founder_time_cost_month": e["founder_time_cost_month"],
+        "cac_with_time": cac_with_time,
+        "ltv_cac_with_time": ltv_cac_with_time,
+        "payback_with_time": payback_with_time,
+        "ltv_cac_with_time_status": (_band(ltv_cac_with_time, LTV_CAC_BANDS, LTV_CAC_TOP)
+                                     if ltv_cac_with_time is not None else None),
         "churn_status": churn_status,
         "payback_status": payback_status,
         "warnings": warnings,
@@ -596,7 +612,8 @@ def goal(e: dict, base_forecast: dict | None) -> dict:
         customers_needed = None
         new_needed = target / (e["price"] * (1 + e["repeat_purchases"]))
     conversion = e["cr_visit_signup"] * e["cr_signup_paid"]
-    cac = unit_economics(e)["cac"]
+    ue = unit_economics(e)
+    cac = ue["cac"]
     steady = base["steady_customers"]
     ceiling = steady * e["price"] if steady is not None else None
     metric = "mrr" if subscription else "revenue"
@@ -608,6 +625,8 @@ def goal(e: dict, base_forecast: dict | None) -> dict:
         "new_per_month_needed": new_needed,
         "traffic_needed": new_needed / conversion if conversion > 0 else None,
         "marketing_needed": new_needed * cac if cac is not None else None,
+        "acquisition_with_time_needed": (new_needed * ue["cac_with_time"]
+                                         if ue["cac_with_time"] is not None else None),
         "goal_month_base": goal_month,
         "mrr_ceiling": ceiling,
         "reachable": reachable,
@@ -888,6 +907,12 @@ def _md_unit_economics(ue, funnel, currency):
         rows.append(["LTV / CAC", fmt_num(ue["ltv_cac"], 2), f"{label}. {action}"])
     else:
         rows.append(["LTV / CAC", DASH, ""])
+    if ue.get("cac_with_time") is not None:
+        label, action = LTV_CAC_LABELS[ue["ltv_cac_with_time_status"]]
+        rows.append(["Время основателя на привлечение, в деньгах за месяц",
+                     fmt_money(ue["founder_time_cost_month"], currency), ""])
+        rows.append(["CAC с учётом времени", fmt_money(ue["cac_with_time"], currency), ""])
+        rows.append(["LTV / CAC с учётом времени", fmt_num(ue["ltv_cac_with_time"], 2), f"{label}. {action}"])
     if subscription:
         payback = fmt_num(ue["payback_months"], 1) + " мес." if ue["payback_months"] is not None else DASH
         rows.append(["Окупаемость CAC", payback, PAYBACK_LABELS.get(ue["payback_status"], "")])
@@ -999,6 +1024,9 @@ def _md_goal(g, ue, currency):
     rows.append(["Нужно новых платящих в месяц", fmt_num(g["new_per_month_needed"], 1)])
     rows.append(["Нужно трафика в месяц", fmt_num(g["traffic_needed"], 0)])
     rows.append(["Нужен бюджет на привлечение в месяц", fmt_money(g["marketing_needed"], currency)])
+    if g.get("acquisition_with_time_needed") is not None:
+        rows.append(["Нужно на привлечение в месяц с учётом времени основателя",
+                     fmt_money(g["acquisition_with_time_needed"], currency)])
     if subscription:
         rows.append(["Потолок MRR при текущих притоке и оттоке", fmt_money(g["mrr_ceiling"], currency)])
     rows.append(["Достигается в базовом сценарии, месяц", _month_text(g["goal_month_base"], "не достигается")])
