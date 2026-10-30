@@ -57,10 +57,14 @@ description: Use when someone wants an honest, numbers-backed evaluation of a st
    | Метрики, PMF, масштабирование | `references/metrics-scaling.md` | План: что измерять, какие пороги | Анализ, «почему не идёт», готовность к масштабу |
 
    Пороги и формулы — только из `references/benchmarks.md`.
-7. **Расчёты.** Собери `data.json` (поля описаны в `economics.md`, `market.md` и `validation.md`) и запусти:
-   ```bash
-   python3 <папка скилла>/scripts/calc.py startup-audit/<slug>/data.json --out startup-audit/<slug>/calc.json --md startup-audit/<slug>/tables.md
-   ```
+7. **Расчёты** — в два прохода. Поля `data.json` описаны в `economics.md`, `market.md` и `validation.md`.
+   - Первый проход: собери в `data.json` разделы `segments`, `market`, `economics` и запусти:
+     ```bash
+     python3 <папка скилла>/scripts/calc.py startup-audit/<slug>/data.json --out startup-audit/<slug>/calc.json --md startup-audit/<slug>/tables.md
+     ```
+   - По результатам (SOM, экономика) выставь баллы оценки идеи — раздел `scorecard`.
+   - Второй проход: запусти ещё раз, уже со `scorecard`.
+
    Ошибка в данных — скрипт назовёт поле; исправь и запусти снова. Нет Python — считай по формулам из `economics.md` и прямо напиши пользователю, что расчёт ручной.
 8. **Вердикт.**
    - Для идеи и MVP — из `calc.json` → `scorecard`: «делать / сначала проверить / отложить», с надёжностью и сработавшими ограничителями. «Отложить» — всегда с путём разворота: что поменять (сегмент, проблему, канал, модель оплаты), чтобы идея стала сильнее.
