@@ -139,6 +139,12 @@ def assert_svg_sane(case, svg):
     for text in root.iter(SVG + "text"):
         x, y = float(text.get("x")), float(text.get("y"))
         case.assertTrue(0 <= x <= vb_w and 0 <= y <= vb_h, (text.text, x, y, vb_w, vb_h))
+        classes = (text.get("class") or "").split()
+        size = 11 if "ch-sm" in classes else 13.5 if "ch-title" in classes else 12.5
+        width = rh._text_width("".join(text.itertext()), size, bool({"ch-b", "ch-v", "ch-title"} & set(classes)))
+        anchor = text.get("text-anchor", "start")
+        left = x if anchor == "start" else x - width if anchor == "end" else x - width / 2
+        case.assertTrue(left >= 0 and left + width <= vb_w, ("".join(text.itertext()), round(left), round(width), vb_w))
     return root
 
 

@@ -716,7 +716,7 @@ def _chart_scorecard(calc, currency):
     rows = [(key, title) for key, title, _ in CRITERIA if isinstance(sc["criteria"].get(key), dict)]
     if not rows:
         return ""
-    value_w = _value_col([_score_text(c["score"]) for c in sc["criteria"].values()] + [fmt_num(sc["total"], 1)])
+    value_w = _value_col([_score_text(sc["criteria"][key]["score"]) for key, _ in rows] + [fmt_num(sc["total"], 1)])
     track_w = VB_W - 2 * PAD - value_w
     value_x = VB_W - PAD
     scale = track_w / 10
@@ -785,7 +785,7 @@ def _verdict_icon(verdict, x, y):
     if shape == "circle":
         return f'<circle class="st-icon st-{verdict}" cx="{_n(x)}" cy="{_n(y)}" r="5"/>'
     if shape == "triangle":
-        return (f'<path class="st-icon st-{verdict}" d="M{_n(x)},{_n(y - 5.5)}l5.5,10h-11z"/>')
+        return f'<path class="st-icon st-{verdict}" d="M{_n(x)},{_n(y - 5.5)}l5.5,10h-11z"/>'
     return f'<rect class="st-icon st-{verdict}" x="{_n(x - 4.5)}" y="{_n(y - 4.5)}" width="9" height="9"/>'
 
 
@@ -949,14 +949,15 @@ def _unit_caption(word, currency):
     return f"{word} {symbol}".strip() if currency == "USD" else (f"{word}{NBSP}{symbol}" if word else symbol)
 
 
-def _line_chart(name, title, caption, series, legend, currency, lo, hi, goal=None, zero=False, dots=()):
+def _line_chart(title, caption, series, legend, currency, lo, hi, goal=None, zero=False, dots=()):
     ticks, step = _nice_ticks(lo, hi)
     lo, hi = ticks[0], ticks[-1]
     unit, unit_word = _axis_unit(max(abs(lo), abs(hi)))
     digits = 0 if abs(step / unit - round(step / unit)) < 1e-9 else 1
     months = [m for points in series.values() for m, _ in points]
     x_lo, x_hi = min(months), max(months)
-    left, right = 44, VB_W - PAD
+    tick_labels = [fmt_num(tick / unit, digits) for tick in ticks]
+    left, right = max(44.0, max(_text_width(label, SMALL) for label in tick_labels) + 12), VB_W - PAD
     top = 40 + 18 * len(legend) + 10
     bottom = top + PLOT_H
 
@@ -969,17 +970,17 @@ def _line_chart(name, title, caption, series, legend, currency, lo, hi, goal=Non
     parts = [_text(PAD, 20, title, "ch-title")]
     if caption:
         parts.append(_text(VB_W - PAD, 20, caption, "ch-2 ch-sm", "end"))
-    for k, (cls, label, value, key_cls) in enumerate(legend):
+    for k, (label, value, key_cls) in enumerate(legend):
         y = 40 + 18 * k
         parts.append(_line(PAD, y - 4, PAD + 18, y - 4, key_cls))
         parts.append(_text(PAD + 26, y, label, "ch-l"))
         parts.append(_text(VB_W - PAD, y, value, "ch-v", "end"))
     parts.append(_text(PAD, top - 10, _unit_caption(unit_word, currency), "ch-2 ch-sm"))
-    for tick in ticks:
+    for tick, label in zip(ticks, tick_labels):
         y = y_of(tick)
         cls = "ch-zero" if zero and abs(tick) < 1e-9 else "ch-axis" if abs(tick - lo) < 1e-9 else "ch-grid"
         parts.append(_line(left, y, right, y, cls))
-        parts.append(_text(left - 6, y + 4, fmt_num(tick / unit, digits), "ch-2 ch-sm ch-num", "end"))
+        parts.append(_text(left - 6, y + 4, label, "ch-2 ch-sm ch-num", "end"))
     if goal is not None:
         y = y_of(goal)
         parts.append(_line(left, y, right, y, "ch-goal-line"))
@@ -1002,7 +1003,7 @@ def _line_chart(name, title, caption, series, legend, currency, lo, hi, goal=Non
 
 
 def _legend_entry(scenario, value):
-    return (scenario, SCENARIO_LABELS[scenario], value, f"ch-key {SCENARIO_CLASSES[scenario]}")
+    return SCENARIO_LABELS[scenario], value, f"ch-key {SCENARIO_CLASSES[scenario]}"
 
 
 def _chart_forecast(calc, currency):
@@ -1031,11 +1032,11 @@ def _chart_forecast(calc, currency):
             dots.append((scenario, month, value, f"{SCENARIO_LABELS[scenario]}: {_money_short(value, currency)}"))
     if goal is not None:
         suffix = "" if drawn is not None else " — выше шкалы"
-        legend.append(("goal", "Цель", fmt_money(goal, currency) + suffix, "ch-key ch-goal-key"))
+        legend.append(("Цель", fmt_money(goal, currency) + suffix, "ch-key ch-goal-key"))
     title = "MRR по месяцам" if key == "mrr" else "Выручка по месяцам"
-    parts, height = _line_chart("forecast", title, f"значения на {horizon}-м мес.", series, legend, currency,
-                                0.0, hi, goal=drawn, dots=dots)
-    desc = f"{title}: " + "; ".join(f"{label} — {value}" for _, label, value, _ in legend)
+    parts, height = _line_chart(title, f"значения на {horizon}-м мес.", series, legend, currency, 0.0, hi,
+                                goal=drawn, dots=dots)
+    desc = f"{title}: " + "; ".join(f"{label} — {value}" for label, value, _ in legend)
     return _svg("forecast", height, title, desc, "".join(parts))
 
 
@@ -1071,8 +1072,8 @@ def _chart_cash(calc, currency):
         if hit is not None:
             dots.append((scenario, hit[0], hit[1], f"{SCENARIO_LABELS[scenario]}: {fact}"))
     title = "Деньги на счёте" if known else "Прибыль нарастающим итогом"
-    parts, height = _line_chart("cash", title, "", series, legend, currency, lo, hi, zero=True, dots=dots)
-    desc = f"{title}: " + "; ".join(f"{label} — {value}" for _, label, value, _ in legend)
+    parts, height = _line_chart(title, "", series, legend, currency, lo, hi, zero=True, dots=dots)
+    desc = f"{title}: " + "; ".join(f"{label} — {value}" for label, value, _ in legend)
     return _svg("cash", height, title, desc, "".join(parts))
 
 
