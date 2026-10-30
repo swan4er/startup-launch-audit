@@ -1,0 +1,19 @@
+{
+  "project": {"name": "Telegram-бот аватарок", "currency": "RUB", "stage": "revenue"},
+  "economics": {
+    "model": "subscription",
+    "price": 390,
+    "variable_cost_pct": 0.45,
+    "churn_month": 0.25,
+    "traffic_month": 1500,
+    "traffic_growth_month": 0,
+    "cr_visit_signup": 1,
+    "cr_signup_paid": 0.02,
+    "marketing_month": 30000,
+    "fixed_costs_month": 2000,
+    "cash_now": 50000,
+    "start_customers": 60,
+    "goal_mrr": 300000,
+    "horizon_months": 36
+  }
+}

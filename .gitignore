@@ -1,0 +1,11 @@
+# Частные файлы проекта — не публикуются
+CLAUDE.md
+docs/
+
+# Результаты прогонов скилла и временное
+startup-audit/
+tests/runs/
+dist/
+__pycache__/
+*.pyc
+.DS_Store
